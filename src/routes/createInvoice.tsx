@@ -1,6 +1,6 @@
-  import { useForm } from '@tanstack/react-form'
+import { useForm } from '@tanstack/react-form'
 import { createFileRoute } from '@tanstack/react-router';
-  import { zodValidator } from '@tanstack/zod-form-adapter'
+import { zodValidator } from '@tanstack/zod-form-adapter'
 
   export const Route = createFileRoute("/createInvoice")({
     component: CreateInvoice,
@@ -10,8 +10,8 @@ import { createFileRoute } from '@tanstack/react-router';
     const form = useForm({
       validatorAdapter: zodValidator(),
       defaultValues: {
-        name: '',
-        quantity: 0,
+        category: '',
+        quantity: "0",
         price: "0",
       },
       onSubmit: async ({ value }) => {
@@ -33,7 +33,7 @@ import { createFileRoute } from '@tanstack/react-router';
           <div>
             {/* A type-safe field component*/}
             <form.Field
-              name="firstName"
+              name="category"
               validators={{
                 onChange: ({ value }) =>
                   !value
@@ -50,26 +50,22 @@ import { createFileRoute } from '@tanstack/react-router';
                   )
                 },
               }}
-              children={(field) => {
-                // Avoid hasty abstractions. Render props are great!
-                return (
-                  <>
-                    <label htmlFor={field.name}>First Name:</label>
-                    <input
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                  </>
-                )
-              }}
+              children={(field) => ( 
+              <>
+                <label htmlFor={field.name}>First Name:</label>
+                <input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)} />
+              </>
+              )}
             />
           </div>
           <div>
             <form.Field
-              name="lastName"
+              name="quantity"
               children={(field) => (
                 <>
                   <label htmlFor={field.name}>Last Name:</label>
@@ -78,6 +74,25 @@ import { createFileRoute } from '@tanstack/react-router';
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
+                    type="number"
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                </>
+              )}
+            />
+          </div>
+          <div>
+            <form.Field
+              name="price"
+              children={(field) => (
+                <>
+                  <label htmlFor={field.name}>Last Name:</label>
+                  <input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    type="number"
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
                 </>

@@ -14,6 +14,9 @@ dependencies:
   '@tanstack/react-router':
     specifier: ^1.51.2
     version: 1.51.2(react-dom@18.3.1)(react@18.3.1)
+  '@tanstack/zod-form-adapter':
+    specifier: ^0.31.0
+    version: 0.31.0(zod@3.23.8)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -35,6 +38,9 @@ dependencies:
   tailwind-merge:
     specifier: ^2.5.2
     version: 2.5.2
+  zod:
+    specifier: ^3.23.8
+    version: 3.23.8
 
 devDependencies:
   '@eslint/js':
@@ -1010,6 +1016,15 @@ packages:
 
   /@tanstack/store@0.5.5:
     resolution: {integrity: sha512-EOSrgdDAJExbvRZEQ/Xhh9iZchXpMN+ga1Bnk8Nmygzs8TfiE6hbzThF+Pr2G19uHL6+DTDTHhJ8VQiOd7l4tA==}
+
+  /@tanstack/zod-form-adapter@0.31.0(zod@3.23.8):
+    resolution: {integrity: sha512-Nru0hDJ/FcblPg5jIe4OmZ5nHaVi3spB44QP2tBIG44MyQHQ0ghTXbUVuMww9PRcPzD+v97lhIACluoZoaeoXw==}
+    peerDependencies:
+      zod: ^3.x
+    dependencies:
+      '@tanstack/form-core': 0.30.0
+      zod: 3.23.8
+    dev: false
 
   /@types/babel__core@7.20.5:
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -2947,4 +2962,3 @@ packages:
 
   /zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
-    dev: true

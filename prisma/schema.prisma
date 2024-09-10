@@ -12,3 +12,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Invoice {
+  invoice_id Int @id @default(autoincrement())
+  item_name String
+  quantity Int
+  price Float
+}

@@ -4,44 +4,42 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 const app = express()
 
-app.get('/feed', async (req, res) => {
-  const posts = await prisma.post.findMany({
-    where: { published: true },
-    include: { author: true },
-  })
-  res.json(posts)
+app.get('/getAllInvoice', async (req, res) => {
+  const invoices = await prisma.invoice.findMany()
+  res.json(invoices)
 })
 
-app.post('/post', async (req, res) => {
-  const { title, content, authorEmail } = req.body
-  const post = await prisma.post.create({
+app.post('/createInvoice', async (req, res) => {
+  const { item_name, quantity, price } = req.body
+  const newInvoice = await prisma.invoice.create({
     data: {
-      title,
-      content,
-      published: false,
-      author: { connect: { email: authorEmail } },
+      item_name,
+      quantity,
+      price,
     },
   })
-  res.json(post)
+  res.json(newInvoice)
 })
 
-app.put('/publish/:id', async (req, res) => {
-  const { id } = req.params
-  const post = await prisma.post.update({
-    where: { id },
-    data: { published: true },
+app.put('/invoice/:invoice_id', async (req, res) => {
+  const { invoice_id }: {invoice_id: string} = req.params
+  const {item_name, quantity, price} = req.body()
+  const post = await prisma.invoice.update({
+    where: { invoice_id: Number(invoice_id) },
+    data: { item_name, quantity, price },
   })
   res.json(post)
 })
 
-app.delete('/user/:id', async (req, res) => {
-  const { id } = req.params
-  const user = await prisma.user.delete({
+app.delete('/user/:invoice_id', async (req, res) => {
+  const { invoice_id }: {invoice_id?: string} = req.params
+  const user = await prisma.invoice.delete({
     where: {
-      id,
+      invoice_id: Number(invoice_id),
     },
   })
 res.json(user)
 })
 
 const server = app.listen(3000)
+console.log("Server running at port: " + server);

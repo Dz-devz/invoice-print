@@ -1,6 +1,6 @@
 import {z} from "zod"
 
-const createInvoiceFormSchema = z.object({
+export const createInvoiceFormSchema = z.object({
     category: z.string().min(2, {message: "Category must have 3 or more Character"}),
     quantity: z.string(),
     amount: z.string().regex(/^\d+(\.\d{1,2})?$/, {
@@ -8,4 +8,4 @@ const createInvoiceFormSchema = z.object({
       }),
   });
 
-  export type createInvoiceFormSchema = z.infer<typeof createInvoiceFormSchema>; 
+  export type CreateInvoiceFormSchema = z.infer<typeof createInvoiceFormSchema>; 

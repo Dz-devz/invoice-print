@@ -1,4 +1,4 @@
-import { invoiceData } from '../lib/invocedata';
+
 
 const Invoice = () => {
   return (

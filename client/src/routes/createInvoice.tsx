@@ -35,7 +35,7 @@ function CreateInvoice() {
 
   return (
     <div>
-      <h1>Simple Form Example</h1>
+      <h1>Invoice Form</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();

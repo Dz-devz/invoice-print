@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import axios from 'axios';
-import { useEffect } from 'react';
 
 type Invoice = {
   id: number;

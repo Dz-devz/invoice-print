@@ -27,11 +27,9 @@ export const useStore = create<InvoiceStore>((set) => ({
 
 const Invoice = () => {
   
-  const {invoices, fetchInvoices} = useStore();
+  const {invoices} = useStore();
 
-  useEffect(() => {
-    fetchInvoices();
-  }, []);
+  useStore.getState().fetchInvoices();
 
   return (
     <div id="invoice" className="p-4 print:p-0 print:w-full">

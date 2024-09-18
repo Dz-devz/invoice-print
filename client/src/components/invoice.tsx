@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import axios from 'axios';
 
 type Invoice = {
-  id: number;
+  invoice_id: number;
   category: string;
   quantity: number;
-  amount: number;
+  price: number;
 };
 
 interface InvoiceStore {
@@ -45,11 +45,11 @@ const Invoice = () => {
         </thead>
         <tbody>
           {invoices.map((invoice) => (
-            <tr key={invoice.id} className="border-t">
-              <td className="py-2 px-4">{invoice.id}</td>
+            <tr key={invoice.invoice_id} className="border-t">
+              <td className="py-2 px-4">{invoice.invoice_id}</td>
               <td className="py-2 px-4">{invoice.category}</td>
               <td className="py-2 px-4">{invoice.quantity}</td>
-              <td className="py-2 px-4">{invoice.amount}</td>
+              <td className="py-2 px-4">{invoice.price}</td>
             </tr>
           ))}
         </tbody>

@@ -31,31 +31,84 @@ const Invoice = () => {
   useStore.getState().fetchInvoices();
 
   return (
-    <div id="invoice" className="p-4 print:p-0 print:w-full">
-      <h1 className="text-2xl font-bold print:text-xl">Invoice</h1>
-      <p className="text-lg print:text-base">Company Name</p>
-      <table className="min-w-full bg-white print:bg-transparent">
-        <thead className="bg-gray-50 print:bg-gray-100">
-          <tr>
-            <th className="py-2 px-4">Item</th>
-            <th className="py-2 px-4">Quantity</th>
-            <th className="py-2 px-4">Price</th>
-            <th className="py-2 px-4">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {invoices.map((invoice) => (
-            <tr key={invoice.invoice_id} className="border-t">
-              <td className="py-2 px-4">{invoice.invoice_id}</td>
-              <td className="py-2 px-4">{invoice.category}</td>
-              <td className="py-2 px-4">{invoice.quantity}</td>
-              <td className="py-2 px-4">{invoice.price}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h2 className="text-lg font-semibold print:text-base mt-4">Total:</h2>
+<div id="invoice" className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg">
+  {/* Invoice Header */}
+  <div className="text-center mb-8">
+    <h1 className="text-6xl font-bold italic text-gray-800 print:text-5xl mb-2">hello</h1>
+    <h2 className="text-lg font-light tracking-widest text-gray-500">THIS IS YOUR INVOICE</h2>
+  </div>
+
+  {/* Invoice Details Section */}
+  <div className="mb-8 text-sm print:text-xs text-gray-700">
+    <div className="grid grid-cols-2 gap-y-1">
+      <div className="font-bold">BILLED TO:</div>
+      <div>Jonathan Patterson</div>
+      
+      <div className="font-bold">PAY TO:</div>
+      <div>Liceria & Co.</div>
+
+      <div className="font-bold">Bank:</div>
+      <div>Borcele Bank</div>
+      
+      <div className="font-bold">Account No:</div>
+      <div>0123 4567 8901</div>
     </div>
+  </div>
+
+  {/* Invoice Table */}
+  <table className="w-full text-sm print:text-xs text-gray-700 border-t border-b border-dashed border-gray-300">
+    <thead className="border-b border-dashed border-gray-300">
+      <tr>
+        <th className="py-3 px-2 text-left font-bold uppercase">Description</th>
+        <th className="py-3 px-2 text-left font-bold uppercase">Unit Price</th>
+        <th className="py-3 px-2 text-left font-bold uppercase">Qty</th>
+        <th className="py-3 px-2 text-left font-bold uppercase">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {invoices.map((invoice) => (
+        <tr key={invoice.invoice_id} className="border-b border-dashed border-gray-300">
+          <td className="py-2 px-2">{invoice.category}</td>
+          <td className="py-2 px-2">${invoice.price.toFixed(2)}</td>
+          <td className="py-2 px-2">{invoice.quantity}</td>
+          <td className="py-2 px-2">${(invoice.quantity * invoice.price).toFixed(2)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  {/* Subtotal and Total */}
+  <div className="mt-4 text-gray-800 text-lg font-bold border-t border-dashed border-gray-300 pt-4">
+    <div className="flex justify-between">
+      <span>Subtotal</span>
+      <span>${invoices.reduce((sum, invoice) => sum + invoice.quantity * invoice.price, 0).toFixed(2)}</span>
+    </div>
+    <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
+      <span>Tax (10%)</span>
+      <span>${(invoices.reduce((sum, invoice) => sum + invoice.quantity * invoice.price, 0) * 0.1).toFixed(2)}</span>
+    </div>
+    <div className="flex justify-between text-xl font-bold mt-4">
+      <span>Total</span>
+      <span>${(invoices.reduce((sum, invoice) => sum + invoice.quantity * invoice.price, 0) * 1.1).toFixed(2)}</span>
+    </div>
+  </div>
+
+  {/* Footer */}
+  <div className="mt-10 text-sm print:text-xs">
+    <div className="flex justify-between">
+      <div>
+        <p className="font-bold">INVOICE NO: 01234</p>
+        <p>Date: 11.02.2030</p>
+        <p>Due Date: 11.03.2030</p>
+      </div>
+      <div className="text-right">
+        <p className="font-bold">THANK YOU</p>
+        <p className="mt-4">_______________________</p>
+        <p>Avery Davis</p>
+      </div>
+    </div>
+  </div>
+</div>
   );
 };
 

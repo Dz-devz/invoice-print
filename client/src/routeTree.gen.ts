@@ -11,11 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as InvoicesPageImport } from './routes/invoicesPage'
 import { Route as CreateInvoiceImport } from './routes/createInvoice'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const InvoicesPageRoute = InvoicesPageImport.update({
+  path: '/invoicesPage',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const CreateInvoiceRoute = CreateInvoiceImport.update({
   path: '/createInvoice',
@@ -57,6 +63,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateInvoiceImport
       parentRoute: typeof rootRoute
     }
+    '/invoicesPage': {
+      id: '/invoicesPage'
+      path: '/invoicesPage'
+      fullPath: '/invoicesPage'
+      preLoaderRoute: typeof InvoicesPageImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -66,12 +79,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/createInvoice': typeof CreateInvoiceRoute
+  '/invoicesPage': typeof InvoicesPageRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/createInvoice': typeof CreateInvoiceRoute
+  '/invoicesPage': typeof InvoicesPageRoute
 }
 
 export interface FileRoutesById {
@@ -79,14 +94,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/createInvoice': typeof CreateInvoiceRoute
+  '/invoicesPage': typeof InvoicesPageRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/createInvoice'
+  fullPaths: '/' | '/about' | '/createInvoice' | '/invoicesPage'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/createInvoice'
-  id: '__root__' | '/' | '/about' | '/createInvoice'
+  to: '/' | '/about' | '/createInvoice' | '/invoicesPage'
+  id: '__root__' | '/' | '/about' | '/createInvoice' | '/invoicesPage'
   fileRoutesById: FileRoutesById
 }
 
@@ -94,12 +110,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CreateInvoiceRoute: typeof CreateInvoiceRoute
+  InvoicesPageRoute: typeof InvoicesPageRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CreateInvoiceRoute: CreateInvoiceRoute,
+  InvoicesPageRoute: InvoicesPageRoute,
 }
 
 export const routeTree = rootRoute
@@ -116,7 +134,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/createInvoice"
+        "/createInvoice",
+        "/invoicesPage"
       ]
     },
     "/": {
@@ -127,6 +146,9 @@ export const routeTree = rootRoute
     },
     "/createInvoice": {
       "filePath": "createInvoice.tsx"
+    },
+    "/invoicesPage": {
+      "filePath": "invoicesPage.tsx"
     }
   }
 }

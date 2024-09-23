@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 type Invoice = {
   invoice_id: number;
@@ -26,16 +27,20 @@ export const useStore = create<InvoiceStore>((set) => ({
 
 const Invoice = () => {
   
-  const {invoices} = useStore();
+  const {invoices, fetchInvoices} = useStore();
 
-  useStore.getState().fetchInvoices();
+  useEffect(() => {
+    fetchInvoices();
+  }, [fetchInvoices]);
+
+ // useStore.getState().fetchInvoices();
 
   return (
 <div id="invoice" className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg">
   {/* Invoice Header */}
   <div className="text-center mb-8">
-    <h1 className="text-6xl font-bold italic text-gray-800 print:text-5xl mb-2">hello</h1>
-    <h2 className="text-lg font-light tracking-widest text-gray-500">THIS IS YOUR INVOICE</h2>
+    <h1 className="text-6xl font-bold italic border text-gray-800 print:text-5xl mb-2">hello</h1>
+    <h2 className="text-lg font-light border border-2 text-red-500">THIS IS YOUR INVOICE</h2>
   </div>
 
   {/* Invoice Details Section */}

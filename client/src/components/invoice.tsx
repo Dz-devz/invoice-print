@@ -1,29 +1,5 @@
-import { create } from 'zustand';
-import axios from 'axios';
 import { useEffect } from 'react';
-
-type Invoice = {
-  invoice_id: number;
-  category: string;
-  quantity: number;
-  price: number;
-};
-
-interface InvoiceStore {
-  invoices: Invoice[];
-  fetchInvoices: () => Promise<void>;
-}
-
-// Define Zustand store outside of the component
-export const useStore = create<InvoiceStore>((set) => ({
-  invoices: [],
-  
-  // Fetch invoices from the API
-  fetchInvoices: async () => {
-    const response = await axios.get<Invoice[]>('http://localhost:8080/getAllInvoice');  // Change port if needed
-    set({ invoices: response.data });
-  },
-}));
+import { useStore } from '@/hooks/invoiceHook';
 
 const Invoice = () => {
   

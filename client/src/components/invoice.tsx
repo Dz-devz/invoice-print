@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useStore } from '@/hooks/invoiceHook';
+import { useStore } from '../hooks/invoiceHook';
 
 const Invoice = () => {
   
@@ -13,13 +13,9 @@ const Invoice = () => {
 
   return (
 <div id="invoice" className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg">
-  {/* Invoice Header */}
   <div className="text-center mb-8">
-    <h1 className="text-6xl font-bold italic border text-gray-800 print:text-5xl mb-2">hello</h1>
-    <h2 className="text-lg font-light border border-2 text-red-500">THIS IS YOUR INVOICE</h2>
+    <h2 className="text-lg font-bold underline">THIS IS YOUR INVOICE</h2>
   </div>
-
-  {/* Invoice Details Section */}
   <div className="mb-8 text-sm print:text-xs text-gray-700">
     <div className="grid grid-cols-2 gap-y-1">
       <div className="font-bold">BILLED TO:</div>

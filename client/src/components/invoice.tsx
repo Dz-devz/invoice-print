@@ -11,10 +11,13 @@ const Invoice = () => {
 
  // useStore.getState().fetchInvoices();
 
+ const date = new Date();
+ const standardDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
   return (
 <div id="invoice" className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg">
   <div className="text-center mb-8">
-    <h2 className="text-lg font-bold underline">THIS IS YOUR INVOICE</h2>
+    <h2 className="text-lg font-bold underline">Invoice Pro</h2>
   </div>
   <div className="mb-8 text-sm print:text-xs text-gray-700">
     <div className="grid grid-cols-2 gap-y-1">
@@ -74,14 +77,13 @@ const Invoice = () => {
   <div className="mt-10 text-sm print:text-xs">
     <div className="flex justify-between">
       <div>
-        <p className="font-bold">INVOICE NO: 01234</p>
-        <p>Date: 11.02.2030</p>
-        <p>Due Date: 11.03.2030</p>
+        <p className="font-bold">Invoice no. 1</p>
+        <p>Date: {standardDate}</p>
+        <p>Due Date: 11.03.2024</p>
       </div>
       <div className="text-right">
-        <p className="font-bold">THANK YOU</p>
-        <p className="mt-4">_______________________</p>
-        <p>Avery Davis</p>
+        <p className="font-bold">Thank you for using Invoice Pro!</p>
+        <p>Darwin Jordan</p>
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useStore } from '../hooks/invoiceHook';
 
-const Invoice = () => {
+const Invoice = ({invoiceNo}: {invoiceNo: number}) => {
   
   const {invoices, fetchInvoices} = useStore();
 
@@ -77,7 +77,7 @@ const Invoice = () => {
   <div className="mt-10 text-sm print:text-xs">
     <div className="flex justify-between">
       <div>
-        <p className="font-bold">Invoice no. 1</p>
+        <p className="font-bold">Invoice no. {invoiceNo}</p>
         <p>Date: {standardDate}</p>
         <p>Due Date: 11.03.2024</p>
       </div>

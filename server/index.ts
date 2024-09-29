@@ -75,6 +75,6 @@ app.delete("/user/:invoice_id", async (req, res) => {
 const server = createServer(app); // Use app as the handler
 
 // Serve the app similar to Hono's approach
-server.listen(8080, () => {
-  console.log(`Server running on port 8080`);
+server.listen(3000, () => {
+  console.log(`Server running on port 3000`);
 });

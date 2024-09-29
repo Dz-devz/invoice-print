@@ -49,9 +49,9 @@ const Invoice = ({invoiceNo}: {invoiceNo: number}) => {
       {invoices.map((invoice) => (
         <tr key={invoice.invoice_id} className="border-b border-dashed border-gray-300">
           <td className="py-2 px-2">{invoice.category}</td>
-          <td className="py-2 px-2">${invoice.price.toFixed(2)}</td>
+          <td className="py-2 px-2">₱{invoice.price.toFixed(2)}</td>
           <td className="py-2 px-2">{invoice.quantity}</td>
-          <td className="py-2 px-2">${(invoice.quantity * invoice.price).toFixed(2)}</td>
+          <td className="py-2 px-2">₱{(invoice.quantity * invoice.price).toFixed(2)}</td>
         </tr>
       ))}
     </tbody>
@@ -61,19 +61,17 @@ const Invoice = ({invoiceNo}: {invoiceNo: number}) => {
   <div className="mt-4 text-gray-800 text-lg font-bold border-t border-dashed border-gray-300 pt-4">
     <div className="flex justify-between">
       <span>Subtotal</span>
-      <span>${invoices.reduce((sum, invoice) => sum + invoice.quantity * invoice.price, 0).toFixed(2)}</span>
+      <span>₱{invoices.reduce((sum, invoice) => sum + invoice.quantity * invoice.price, 0).toFixed(2)}</span>
     </div>
     <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
       <span>Tax (10%)</span>
-      <span>${(invoices.reduce((sum, invoice) => sum + invoice.quantity * invoice.price, 0) * 0.1).toFixed(2)}</span>
+      <span>₱{(invoices.reduce((sum, invoice) => sum + invoice.quantity * invoice.price, 0) * 0.1).toFixed(2)}</span>
     </div>
     <div className="flex justify-between text-xl font-bold mt-4">
       <span>Total</span>
-      <span>${(invoices.reduce((sum, invoice) => sum + invoice.quantity * invoice.price, 0) * 1.1).toFixed(2)}</span>
+      <span>₱{(invoices.reduce((sum, invoice) => sum + invoice.quantity * invoice.price, 0) * 1.1).toFixed(2)}</span>
     </div>
   </div>
-
-  {/* Footer */}
   <div className="mt-10 text-sm print:text-xs">
     <div className="flex justify-between">
       <div>

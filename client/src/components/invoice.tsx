@@ -34,8 +34,6 @@ const Invoice = ({invoiceNo}: {invoiceNo: number}) => {
       <div>0123 4567 8901</div>
     </div>
   </div>
-
-  {/* Invoice Table */}
   <table className="w-full text-sm print:text-xs text-gray-700 border-t border-b border-dashed border-gray-300">
     <thead className="border-b border-dashed border-gray-300">
       <tr>
@@ -56,8 +54,6 @@ const Invoice = ({invoiceNo}: {invoiceNo: number}) => {
       ))}
     </tbody>
   </table>
-
-  {/* Subtotal and Total */}
   <div className="mt-4 text-gray-800 text-lg font-bold border-t border-dashed border-gray-300 pt-4">
     <div className="flex justify-between">
       <span>Subtotal</span>

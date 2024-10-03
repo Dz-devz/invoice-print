@@ -21,36 +21,42 @@ app.get("/getAllInvoice", async (req, res) => {
 
 app.post("/createInvoice", async (req, res) => {
   try {
-    const { category, quantity, price } = req.body;
+    const invoices = req.body; // Get the body of the request
 
-    // Basic validation to check if required fields are provided
-    if (!category || quantity === undefined || price === undefined) {
-      return res.status(400).json({ error: "Missing required fields" });
+    // Check if the incoming data is an array or a single object
+    const invoicesArray = Array.isArray(invoices) ? invoices : [invoices];
+
+    // Validate each invoice object
+    for (const invoice of invoicesArray) {
+      const { category, quantity, price } = invoice;
+
+      // Basic validation to check if required fields are provided
+      if (!category || quantity === undefined || price === undefined) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      // Ensure quantity and price are the correct types
+      if (
+        typeof category !== "string" ||
+        typeof quantity !== "number" ||
+        typeof price !== "number"
+      ) {
+        return res.status(400).json({ error: "Invalid data types" });
+      }
     }
 
-    // Ensure quantity and price are the correct types
-    if (
-      typeof category !== "string" ||
-      typeof quantity !== "number" ||
-      typeof price !== "number"
-    ) {
-      return res.status(400).json({ error: "Invalid data types" });
-    }
-
-    const newInvoice = await prisma.invoice.create({
-      data: {
-        category,
-        quantity,
-        price,
-      },
+    // Create invoices in the database
+    const newInvoices = await prisma.invoice.createMany({
+      data: invoicesArray,
     });
 
-    res.json(newInvoice);
+    res.json(newInvoices);
   } catch (error) {
-    console.error("Error creating invoice:", error);
+    console.error("Error creating invoices:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 app.put("/invoice/:invoice_id", async (req, res) => {
   const { invoice_id }: { invoice_id: string } = req.params;
@@ -75,6 +81,6 @@ app.delete("/user/:invoice_id", async (req, res) => {
 const server = createServer(app); // Use app as the handler
 
 // Serve the app similar to Hono's approach
-server.listen(3000, () => {
-  console.log(`Server running on port 3000`);
+server.listen(8080, () => {
+  console.log(`Server running on port 8080`);
 });

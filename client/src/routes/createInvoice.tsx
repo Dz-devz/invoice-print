@@ -31,9 +31,8 @@ function CreateInvoice() {
     },
     onSubmit: async () => {
       try {
-        const response = await axios.post("http://localhost:8080/createInvoice", {
-          items,
-        });
+        // Sending the items array directly
+        const response = await axios.post("http://localhost:8080/createInvoice", items);
         console.log("Invoice created:", response.data);
         // Optionally clear the items after successful submission
         setItems([{ category: "", quantity: 0, price: 0 }]);

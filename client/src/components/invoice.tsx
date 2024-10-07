@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useStore } from '../hooks/invoiceHook';
 
-const Invoice = ({invoiceNo}: {invoiceNo: number}) => {
+const Invoice = () => {
   
   const {invoices, fetchInvoices} = useStore();
 

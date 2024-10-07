@@ -8,8 +8,8 @@ import { useState } from "react";
 // Define the Invoice Item type
 type InvoiceItem = {
   category: string;
-  quantity: number;
-  price: number;
+  quantity: string;
+  price: string;
 };
 
 export const Route = createFileRoute("/createInvoice")({
@@ -19,15 +19,15 @@ export const Route = createFileRoute("/createInvoice")({
 function CreateInvoice() {
   // Use the InvoiceItem type in the state
   const [items, setItems] = useState<InvoiceItem[]>([
-    { category: "", quantity: 0, price: 0 },
+    { category: "", quantity: "0", price: "0" },
   ]);
   
   const form = useForm({
     validatorAdapter: zodValidator(),
     defaultValues: {
       category: "",
-      quantity: "",
-      price: "",
+      quantity: "0",
+      price: "0",
     },
     onSubmit: async () => {
       try {
@@ -35,7 +35,7 @@ function CreateInvoice() {
         const response = await axios.post("http://localhost:8080/createInvoice", items);
         console.log("Invoice created:", response.data);
         // Optionally clear the items after successful submission
-        setItems([{ category: "", quantity: 0, price: 0 }]);
+        setItems([{ category: "", quantity: "0", price: "0" }]);
       } catch (error) {
         console.error("Error creating invoice:", error);
       }
@@ -43,7 +43,7 @@ function CreateInvoice() {
   });
 
   const handleAddItem = () => {
-    setItems([...items, { category: "", quantity: 0, price: 0 }]);
+    setItems([...items, { category: "", quantity: "0", price: "0" }]);
   };
 
   const handleRemoveItem = (index: number) => {
@@ -87,7 +87,11 @@ function CreateInvoice() {
                 name={`quantity-${index}`}
                 value={item.quantity}
                 type="number"
-                onChange={(e) => handleChange(index, 'quantity', Number(e.target.value))}
+                onChange={(e) => handleChange(index, 'quantity', (e.target.value))}
+                onFocus={() => handleChange(index, 'quantity', "")}
+                onBlur={() => {
+                  if (item.quantity === "") handleChange(index, 'quantity', "0");
+                }}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -99,7 +103,11 @@ function CreateInvoice() {
                 name={`price-${index}`}
                 value={item.price}
                 type="number"
-                onChange={(e) => handleChange(index, 'price', Number(e.target.value))}
+                onChange={(e) => handleChange(index, 'price', (e.target.value))}
+                onBlur={() => {
+                  if (item.price === "") handleChange(index, 'price', "0");
+                }}
+                onFocus={() => handleChange(index, 'price', "")}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>

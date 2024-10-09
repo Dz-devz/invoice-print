@@ -71,7 +71,7 @@ const Invoice = () => {
   <div className="mt-10 text-sm print:text-xs">
     <div className="flex justify-between">
       <div>
-        <p className="font-bold">Invoice no. {invoiceNo}</p>
+        <p className="font-bold">Invoice no.</p>
         <p>Date: {standardDate}</p>
         <p>Due Date: 11.03.2024</p>
       </div>

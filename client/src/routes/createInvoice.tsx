@@ -1,5 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-form-adapter";
 import axios from "axios";
 // import { createInvoiceFormSchema } from "../lib/schema/formschema";
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/createInvoice")({
 
 function CreateInvoice() {
   // Use the InvoiceItem type in the state
+  const navigate = useNavigate();
   const [items, setItems] = useState<InvoiceItem[]>([
     { category: "", quantity: 0, price: 0 },
   ]);
@@ -36,6 +37,7 @@ function CreateInvoice() {
         console.log("Invoice created:", response.data);
         // Optionally clear the items after successful submission
         setItems([{ category: "", quantity: 0, price: 0 }]);
+        navigate({to: "/invoicesPage"});
       } catch (error) {
         console.error("Error creating invoice:", error);
       }

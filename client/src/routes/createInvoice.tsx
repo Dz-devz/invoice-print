@@ -58,6 +58,18 @@ function CreateInvoice() {
     setItems(newItems);
   };
 
+    const handleFocus = (index: number, field: keyof InvoiceItem) => {
+      if (items[index][field] === 0) {
+        handleChange(index, field, "" as unknown as InvoiceItem[keyof InvoiceItem]);
+      }
+    };
+  
+    const handleBlur = (index: number, field: keyof InvoiceItem) => {
+      if (items[index][field] === "" || items[index][field] === null) {
+        handleChange(index, field, 0 as InvoiceItem[keyof InvoiceItem]);
+      }
+    };
+
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Create Invoice</h1>
@@ -90,10 +102,8 @@ function CreateInvoice() {
                 value={item.quantity}
                 type="number"
                 onChange={(e) => handleChange(index, 'quantity', Number(e.target.value))}
-                onFocus={() => handleChange(index, 'quantity', 0)}
-                onBlur={() => {
-                  if (item.quantity === 0) handleChange(index, 'quantity', 0);
-                }}
+                onFocus={() => handleFocus(index, 'quantity')} // Clear on focus
+                onBlur={() => handleBlur(index, 'quantity')} // Reset to 0 on blur if empty
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -106,10 +116,8 @@ function CreateInvoice() {
                 value={item.price}
                 type="number"
                 onChange={(e) => handleChange(index, 'price', Number(e.target.value))}
-                onBlur={() => {
-                  if (item.price === 0) handleChange(index, 'price', 0);
-                }}
-                onFocus={() => handleChange(index, 'price', 0)}
+                onFocus={() => handleFocus(index, 'price')} // Clear on focus
+                onBlur={() => handleBlur(index, 'price')} // Reset to 0 on blur if empty
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>

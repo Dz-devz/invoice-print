@@ -1,13 +1,17 @@
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import Invoice from "./invoice";
+import { useStore } from '../hooks/invoiceHook';
 
 const InvoicePage = () => {
   const invoiceRef = useRef<HTMLDivElement>(null);
-
+  const {clearInvoices} = useStore();
   const handlePrint = useReactToPrint({
     content: () => invoiceRef.current,
     documentTitle: "Invoice",
+    onAfterPrint: () => {
+      clearInvoices(); // Clear invoices after printing is completed
+    },
   });
 
   return (

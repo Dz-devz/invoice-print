@@ -19,9 +19,21 @@ app.get("/getAllInvoice", async (req, res) => {
   }
 });
 
+app.get("/getLatestInvoice", async (req, res) => {
+  try{
+    const invoices = await prisma.invoice.findFirst({
+      orderBy: {
+        invoice_id: 'desc',
+      }
+    })
+  } catch (error) {
+    res.status(500).json({error: "Failed to get latest invoices"});
+  }
+});
+
 app.post("/createInvoice", async (req, res) => {
   try {
-    const invoices = req.body; // Get the body of the request
+    const invoices = req.body;
 
     // Check if the incoming data is an array or a single object
     const invoicesArray = Array.isArray(invoices) ? invoices : [invoices];

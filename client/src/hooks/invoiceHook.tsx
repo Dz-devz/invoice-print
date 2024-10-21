@@ -1,30 +1,37 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
-type Invoice = {
-  invoice_id: number;
-  category: string;
+type InvoiceItem = {
+  id: number;
+  description: string;
   quantity: number;
   price: number;
+};
+
+type Invoice = {
+  invoice_id: number;
+  items: InvoiceItem[];
+  createdAt: string;  
 };
 
 interface InvoiceStore {
   invoices: Invoice[];
   fetchInvoices: () => Promise<void>;
-  clearInvoices: () => void;  // Added function to clear invoices
+  clearInvoices: () => void;
 }
 
-// Define Zustand store outside of the component
 export const useStore = create<InvoiceStore>((set) => ({
   invoices: [],
 
-  // Fetch invoices from the API
   fetchInvoices: async () => {
-    const response = await axios.get<Invoice[]>('http://localhost:8080/getAllInvoice');  // Change port if needed
-    set({ invoices: response.data });
+    try {
+      const response = await axios.get<Invoice[]>('http://localhost:8080/getAllInvoices'); 
+      set({ invoices: response.data });
+    } catch (error) {
+      console.error("Error fetching invoices:", error);
+    }
   },
 
-  // Clear invoices by resetting the array
   clearInvoices: () => {
     set({ invoices: [] });
   },

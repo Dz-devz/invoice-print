@@ -2,12 +2,10 @@ import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-form-adapter";
 import axios from "axios";
-// import { createInvoiceFormSchema } from "../lib/schema/formschema";
 import { useState } from "react";
 
-// Define the Invoice Item type
 type InvoiceItem = {
-  category: string;
+  description: string;
   quantity: number;
   price: number;
 };
@@ -17,27 +15,31 @@ export const Route = createFileRoute("/createInvoice")({
 });
 
 function CreateInvoice() {
-  // Use the InvoiceItem type in the state
   const navigate = useNavigate();
+  
   const [items, setItems] = useState<InvoiceItem[]>([
-    { category: "", quantity: 0, price: 0 },
+    { description: "", quantity: 0, price: 0 },
   ]);
   
   const form = useForm({
     validatorAdapter: zodValidator(),
     defaultValues: {
-      category: "",
+      description: "",
       quantity: 0,
       price: 0,
     },
     onSubmit: async () => {
       try {
-        // Sending the items array directly
-        const response = await axios.post("http://localhost:8080/createInvoice", items);        
+        const response = await axios.post("http://localhost:8080/createInvoice", {
+          invoice_no: "INV-" + new Date().getTime(),
+          items: items,
+        });
+        
         console.log("Invoice created:", response.data);
-        // Optionally clear the items after successful submission
-        setItems([{ category: "", quantity: 0, price: 0 }]);
-        navigate({to: "/invoicesPage"});
+        
+        setItems([{ description: "", quantity: 0, price: 0 }]);
+        
+        navigate({ to: "/invoicesPage" });
       } catch (error) {
         console.error("Error creating invoice:", error);
       }
@@ -45,30 +47,30 @@ function CreateInvoice() {
   });
 
   const handleAddItem = () => {
-    setItems([...items, { category: "", quantity: 0, price: 0 }]);
+    setItems([...items, { description: "", quantity: 0, price: 0 }]);
   };
 
   const handleRemoveItem = (index: number) => {
-    setItems(items.filter((_, params) => params !== index));
+    setItems(items.filter((_, idx) => idx !== index));
   };
 
   const handleChange = <K extends keyof InvoiceItem>(index: number, field: K, value: InvoiceItem[K]) => {
     const newItems = [...items];
-    newItems[index][field] = value; // Type-safe assignment
+    newItems[index][field] = value;
     setItems(newItems);
   };
 
-    const handleFocus = (index: number, field: keyof InvoiceItem) => {
-      if (items[index][field] === 0) {
-        handleChange(index, field, "" as unknown as InvoiceItem[keyof InvoiceItem]);
-      }
-    };
-  
-    const handleBlur = (index: number, field: keyof InvoiceItem) => {
-      if (items[index][field] === "" || items[index][field] === null) {
-        handleChange(index, field, 0 as InvoiceItem[keyof InvoiceItem]);
-      }
-    };
+  const handleFocus = (index: number, field: keyof InvoiceItem) => {
+    if (items[index][field] === 0) {
+      handleChange(index, field, "" as unknown as InvoiceItem[keyof InvoiceItem]);
+    }
+  };
+
+  const handleBlur = (index: number, field: keyof InvoiceItem) => {
+    if (items[index][field] === "" || items[index][field] === null) {
+      handleChange(index, field, 0 as InvoiceItem[keyof InvoiceItem]);
+    }
+  };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -84,12 +86,12 @@ function CreateInvoice() {
         {items.map((item, index) => (
           <div key={index} className="space-y-4">
             <div>
-              <label htmlFor={`category-${index}`} className="block text-sm font-medium text-gray-700">Category</label>
+              <label htmlFor={`description-${index}`} className="block text-sm font-medium text-gray-700">Description</label>
               <input
-                id={`category-${index}`}
-                name={`category-${index}`}
-                value={item.category}
-                onChange={(e) => handleChange(index, 'category', e.target.value)}
+                id={`description-${index}`}
+                name={`description-${index}`}
+                value={item.description}
+                onChange={(e) => handleChange(index, 'description', e.target.value)}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -102,8 +104,8 @@ function CreateInvoice() {
                 value={item.quantity}
                 type="number"
                 onChange={(e) => handleChange(index, 'quantity', Number(e.target.value))}
-                onFocus={() => handleFocus(index, 'quantity')} // Clear on focus
-                onBlur={() => handleBlur(index, 'quantity')} // Reset to 0 on blur if empty
+                onFocus={() => handleFocus(index, 'quantity')}
+                onBlur={() => handleBlur(index, 'quantity')}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -116,8 +118,8 @@ function CreateInvoice() {
                 value={item.price}
                 type="number"
                 onChange={(e) => handleChange(index, 'price', Number(e.target.value))}
-                onFocus={() => handleFocus(index, 'price')} // Clear on focus
-                onBlur={() => handleBlur(index, 'price')} // Reset to 0 on blur if empty
+                onFocus={() => handleFocus(index, 'price')} 
+                onBlur={() => handleBlur(index, 'price')}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>

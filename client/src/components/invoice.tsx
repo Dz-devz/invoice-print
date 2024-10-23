@@ -39,41 +39,41 @@ const Invoice = () => {
         </tbody>
       </table>
       {/* Other invoice summary details */}
-      <div className="mt-4 text-gray-800 text-lg font-bold border-t border-dashed border-gray-300 pt-4">
-  <div className="flex justify-between">
-    <span>Subtotal</span>
-    <span>
-      ₱{invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0).toFixed(2)}
-    </span>
-  </div>
-  <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
-    <span>Tax (10%)</span>
-    <span>
-      ₱{(invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 0.1).toFixed(2)}
-    </span>
-  </div>
-  <div className="flex justify-between text-xl font-bold mt-4">
-    <span>Total</span>
-    <span>
-      ₱{(invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 1.1).toFixed(2)}
-    </span>
-  </div>
-</div>
+    <div className="mt-4 text-gray-800 text-lg font-bold border-t border-dashed border-gray-300 pt-4">
+        <div className="flex justify-between">
+          <span>Subtotal</span>
+          <span>
+            ₱{invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0).toFixed(2)}
+          </span>
+        </div>
+        <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
+          <span>Tax (10%)</span>
+          <span>
+            ₱{(invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 0.1).toFixed(2)}
+          </span>
+        </div>
+        <div className="flex justify-between text-xl font-bold mt-4">
+          <span>Total</span>
+          <span>
+            ₱{(invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 1.1).toFixed(2)}
+          </span>
+        </div>
+      </div>
 
-<div className="mt-10 text-sm print:text-xs">
-  <div className="flex justify-between">
-    <div>
-      <p className="font-bold">Invoice no.</p>
-      <p>Date: {standardDate}</p>
-      <p>Due Date: 11.03.2024</p>
+      <div className="mt-10 text-sm print:text-xs">
+        <div className="flex justify-between">
+          <div>
+            <p className="font-bold">Invoice no.</p>
+            <p>Date: {standardDate}</p>
+            <p>Due Date: 11.03.2024</p>
+          </div>
+          <div className="text-right">
+            <p className="font-bold">Thank you for using Invoice Pro!</p>
+            <p>Darwin Jordan</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div className="text-right">
-      <p className="font-bold">Thank you for using Invoice Pro!</p>
-      <p>Darwin Jordan</p>
-    </div>
-  </div>
-</div>
-</div>
   );
 };
 

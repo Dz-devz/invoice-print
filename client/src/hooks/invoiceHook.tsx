@@ -15,24 +15,24 @@ type Invoice = {
 };
 
 interface InvoiceStore {
-  invoices: Invoice[];
-  fetchInvoices: () => Promise<void>;
-  clearInvoices: () => void;
+  invoice: Invoice | null;
+  fetchInvoice: () => Promise<void>;
+  clearInvoice: () => void;
 }
 
 export const useStore = create<InvoiceStore>((set) => ({
-  invoices: [],
+  invoice: null,
 
-  fetchInvoices: async () => {
+  fetchInvoice: async () => {
     try {
-      const response = await axios.get<Invoice[]>('http://localhost:8080/getAllInvoice'); 
-      set({ invoices: response.data });
+      const response = await axios.get<Invoice>('http://localhost:8080/getAllInvoice');
+      set({ invoice: response.data });
     } catch (error) {
-      console.error("Error fetching invoices:", error);
+      console.error("Error fetching invoice:", error);
     }
   },
 
-  clearInvoices: () => {
-    set({ invoices: [] });
+  clearInvoice: () => {
+    set({ invoice: null });
   },
 }));

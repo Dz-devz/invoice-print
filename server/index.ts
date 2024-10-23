@@ -11,12 +11,12 @@ app.use(express.json());
 
 app.get("/getAllInvoice", async (req, res) => {
   try {
-    const invoices = await prisma.invoice.findMany({
-      orderBy: {
-        id: 'desc',
+    const invoices = await prisma.invoice.findFirst({
+      include: {
+        items: true, // Include the related InvoiceItem records
       },
-      select: {
-        id: true,
+      orderBy: {
+        id: 'desc', // Optional: Order by invoice id
       },
     });
     console.log(invoices);
@@ -27,6 +27,7 @@ app.get("/getAllInvoice", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch invoices" });
   }
 });
+
 
 // app.get("/getLatestInvoice", async (req, res) => {
 //   try{

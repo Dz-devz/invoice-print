@@ -2,35 +2,22 @@ import { useEffect } from 'react';
 import { useStore } from '../hooks/invoiceHook';
 
 const Invoice = () => {
-  const { invoices, fetchInvoices } = useStore();
+  const { invoice, fetchInvoice } = useStore();
 
   useEffect(() => {
-    fetchInvoices();
-  }, [fetchInvoices]);
+    fetchInvoice();
+  }, [fetchInvoice]);
 
   const date = new Date();
   const standardDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
+  if (!invoice) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div id="invoice" className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg">
-      <div className="text-center mb-8">
-        <h2 className="text-lg font-bold underline">Invoice Pro</h2>
-      </div>
-      <div className="mb-8 text-sm print:text-xs text-gray-700">
-        <div className="grid grid-cols-2 gap-y-1">
-          <div className="font-bold">BILLED TO:</div>
-          <div>Jonathan Patterson</div>
-          
-          <div className="font-bold">PAY TO:</div>
-          <div>Liceria & Co.</div>
-
-          <div className="font-bold">Bank:</div>
-          <div>Borcele Bank</div>
-          
-          <div className="font-bold">Account No:</div>
-          <div>0123 4567 8901</div>
-        </div>
-      </div>
+      {/* Other invoice details */}
       <table className="w-full text-sm print:text-xs text-gray-700 border-t border-b border-dashed border-gray-300">
         <thead className="border-b border-dashed border-gray-300">
           <tr>
@@ -41,47 +28,52 @@ const Invoice = () => {
           </tr>
         </thead>
         <tbody>
-          {invoices.map((invoice) => (
-            // Map through the items in each invoice
-            invoice.items.map((item) => (
-              <tr key={item.id} className="border-b border-dashed border-gray-300">
-                <td className="py-2 px-2">{item.description}</td>
-                <td className="py-2 px-2">₱{item.price.toFixed(2)}</td>
-                <td className="py-2 px-2">{item.quantity}</td>
-                <td className="py-2 px-2">₱{(item.quantity * item.price).toFixed(2)}</td>
-              </tr>
-            ))
+          {invoice.items.map((item) => (
+            <tr key={item.id} className="border-b border-dashed border-gray-300">
+              <td className="py-2 px-2">{item.description}</td>
+              <td className="py-2 px-2">₱{item.price.toFixed(2)}</td>
+              <td className="py-2 px-2">{item.quantity}</td>
+              <td className="py-2 px-2">₱{(item.quantity * item.price).toFixed(2)}</td>
+            </tr>
           ))}
         </tbody>
       </table>
+      {/* Other invoice summary details */}
       <div className="mt-4 text-gray-800 text-lg font-bold border-t border-dashed border-gray-300 pt-4">
-        <div className="flex justify-between">
-          <span>Subtotal</span>
-          <span>₱{invoices.reduce((sum, invoice) => sum + invoice.items.reduce((itemSum, item) => itemSum + item.quantity * item.price, 0), 0).toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
-          <span>Tax (10%)</span>
-          <span>₱{(invoices.reduce((sum, invoice) => sum + invoice.items.reduce((itemSum, item) => itemSum + item.quantity * item.price, 0), 0) * 0.1).toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between text-xl font-bold mt-4">
-          <span>Total</span>
-          <span>₱{(invoices.reduce((sum, invoice) => sum + invoice.items.reduce((itemSum, item) => itemSum + item.quantity * item.price, 0), 0) * 1.1).toFixed(2)}</span>
-        </div>
-      </div>
-      <div className="mt-10 text-sm print:text-xs">
-        <div className="flex justify-between">
-          <div>
-            <p className="font-bold">Invoice no.</p>
-            <p>Date: {standardDate}</p>
-            <p>Due Date: 11.03.2024</p>
-          </div>
-          <div className="text-right">
-            <p className="font-bold">Thank you for using Invoice Pro!</p>
-            <p>Darwin Jordan</p>
-          </div>
-        </div>
-      </div>
+  <div className="flex justify-between">
+    <span>Subtotal</span>
+    <span>
+      ₱{invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0).toFixed(2)}
+    </span>
+  </div>
+  <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
+    <span>Tax (10%)</span>
+    <span>
+      ₱{(invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 0.1).toFixed(2)}
+    </span>
+  </div>
+  <div className="flex justify-between text-xl font-bold mt-4">
+    <span>Total</span>
+    <span>
+      ₱{(invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 1.1).toFixed(2)}
+    </span>
+  </div>
+</div>
+
+<div className="mt-10 text-sm print:text-xs">
+  <div className="flex justify-between">
+    <div>
+      <p className="font-bold">Invoice no.</p>
+      <p>Date: {standardDate}</p>
+      <p>Due Date: 11.03.2024</p>
     </div>
+    <div className="text-right">
+      <p className="font-bold">Thank you for using Invoice Pro!</p>
+      <p>Darwin Jordan</p>
+    </div>
+  </div>
+</div>
+</div>
   );
 };
 

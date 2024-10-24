@@ -1,21 +1,24 @@
 import { useRef } from "react";
-import { useReactToPrint } from "react-to-print";
 import Invoice from "./invoice";
 import { useStore } from '../hooks/invoiceHook';
 
 const InvoicePage = () => {
   const invoiceRef = useRef<HTMLDivElement>(null);
-  const {clearInvoice} = useStore();
-  const handlePrint = useReactToPrint({
-    content: () => invoiceRef.current,
-    documentTitle: "Invoice",
-    onAfterPrint: () => {
-      clearInvoice(); // Clear invoices after printing is completed
-    },
-  });
+  const { clearInvoice } = useStore();
+
+  const handlePrint = () => {
+    if (invoiceRef.current) {
+      const printContent = invoiceRef.current.innerHTML;
+      const originalContent = document.body.innerHTML;
+
+      document.body.innerHTML = printContent;
+      window.print();
+      document.body.innerHTML = originalContent;
+    }
+  };
 
   return (
-<div className="flex justify-center space-x-4">
+    <div className="flex flex-col items-center justify-center space-x-4">
       <div className="relative mb-2 max-w-xl" ref={invoiceRef}>
         <Invoice />
       </div>
@@ -25,6 +28,12 @@ const InvoicePage = () => {
           onClick={handlePrint}
         >
           Print Invoice
+        </button>
+        <button
+          className="p-4 shadow-md text-white bg-red-600 rounded-lg ml-2"
+          onClick={clearInvoice} // Manual clear button
+        >
+          Clear Invoice
         </button>
       </div>
     </div>

@@ -10,6 +10,7 @@ type InvoiceItem = {
 
 type Invoice = {
   invoice_id: number;
+  invoice_no: string;
   items: InvoiceItem[];
   createdAt: string;  
 };

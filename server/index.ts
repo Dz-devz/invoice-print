@@ -13,7 +13,7 @@ app.get("/getAllInvoice", async (req, res) => {
   try {
     const invoices = await prisma.invoice.findFirst({
       include: {
-        items: true, // Include the related InvoiceItem records
+        items: true,
       },
       orderBy: {
         id: 'desc', // Optional: Order by invoice id

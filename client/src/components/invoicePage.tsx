@@ -31,7 +31,7 @@ const InvoicePage = () => {
         </button>
         <button
           className="p-4 shadow-md text-white bg-red-600 rounded-lg ml-2"
-          onClick={clearInvoice} // Manual clear button
+          onClick={clearInvoice}
         >
           Clear Invoice
         </button>

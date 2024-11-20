@@ -4,7 +4,7 @@ export const Route = createFileRoute('/invoiceHistory')({
   component: () => InvoiceHistory,
 })
 
-export function InvoiceHistory(){
+function InvoiceHistory(){
     return(
         <div>
             <div>

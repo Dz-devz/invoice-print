@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/getAllInvoice", async (req, res) => {
+app.get("/getPresentInvoice", async (req, res) => {
   try {
     const invoices = await prisma.invoice.findFirst({
       include: {

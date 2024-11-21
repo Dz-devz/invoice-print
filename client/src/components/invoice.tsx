@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { useStore } from '../hooks/invoiceHook';
 
 const Invoice = () => {
-  const { invoice, fetchInvoice } = useStore();
+  const { invoice, fetchPresentInvoice } = useStore();
 
   useEffect(() => {
-    fetchInvoice();
-  }, [fetchInvoice]);
+    fetchPresentInvoice();
+  }, [fetchPresentInvoice]);
 
   const date = new Date();
   const standardDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });

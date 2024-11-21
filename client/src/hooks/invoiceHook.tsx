@@ -17,16 +17,16 @@ type Invoice = {
 
 interface InvoiceStore {
   invoice: Invoice | null;
-  fetchInvoice: () => Promise<void>;
+  fetchPresentInvoice: () => Promise<void>;
   clearInvoice: () => void;
 }
 
 export const useStore = create<InvoiceStore>((set) => ({
   invoice: null,
 
-  fetchInvoice: async () => {
+  fetchPresentInvoice: async () => {
     try {
-      const response = await axios.get<Invoice>('http://localhost:8080/getPresentInvoice');
+      const response = await axios.get<Invoice>('http://localhost:8080/getPresentInvoice ');
       set({ invoice: response.data });
     } catch (error) {
       console.error("Error fetching invoice:", error);

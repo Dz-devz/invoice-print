@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import Invoice from '@/components/invoice';
 
 type InvoiceItem = {
   id: number;
@@ -28,6 +29,15 @@ export const useStore = create<InvoiceStore>((set) => ({
     try {
       const response = await axios.get<Invoice>('http://localhost:8080/getPresentInvoice ');
       set({ invoice: response.data });
+    } catch (error) {
+      console.error("Error fetching invoice:", error);
+    }
+  },
+
+  fetchInvoice: async () => {
+    try {
+      const response = await axios.get<Invoice>('http://localhost:8000/getInvoice');
+      set({invoice: response.data})
     } catch (error) {
       console.error("Error fetching invoice:", error);
     }

@@ -29,6 +29,25 @@ app.get("/getPresentInvoice", async (req, res) => {
 });
 
 
+app.get("/getInvoice", async (req, res) => {
+  try {
+    const invoices = await prisma.invoice.findMany({
+      include: {
+        items: true,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+    });
+    console.log(invoices);
+    
+    res.json(invoices);
+  } catch (error) {
+    console.error("Error fetching invoices:", error);
+    res.status(500).json({ error: "Failed to fetch invoices" });
+  }
+});
+
 // app.get("/getLatestInvoice", async (req, res) => {
 //   try{
 //     const invoices = await prisma.invoice.findFirst({

@@ -19,6 +19,7 @@ type Invoice = {
 interface InvoiceStore {
   invoice: Invoice | null;
   fetchPresentInvoice: () => Promise<void>;
+  fetchInvoice: () => Promise<void>;
   clearInvoice: () => void;
 }
 

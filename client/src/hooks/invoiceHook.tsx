@@ -37,7 +37,7 @@ export const useStore = create<InvoiceStore>((set) => ({
 
   fetchInvoice: async () => {
     try {
-      const response = await axios.get<Invoice>('http://localhost:8000/getInvoice');
+      const response = await axios.get<Invoice>('http://localhost:8080/getInvoice');
       set({invoice: response.data})
     } catch (error) {
       console.error("Error fetching invoice:", error);

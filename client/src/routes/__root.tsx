@@ -14,6 +14,9 @@ export const Route = createRootRoute({
           <Link to="/invoicesPage" className="hover:text-green-500 text-gray-700 font-medium transition-all duration-200 ease-in-out [&.active]:font-bold">
             Invoices
           </Link>
+          <Link to="/invoiceHistory" className="hover:text-green-500 text-gray-700 font-medium transition-all duration-200 ease-in-out [&.active]:font-bold">
+            Invoice History
+          </Link>
           <Link to="/createInvoice" className="hover:text-green-500 text-gray-700 font-medium transition-all duration-200 ease-in-out [&.active]:font-bold">
             Create Invoice
           </Link>

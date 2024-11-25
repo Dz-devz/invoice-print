@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import axios from 'axios';
-import Invoice from '@/components/invoice';
 
 type InvoiceItem = {
   id: number;
@@ -9,7 +8,7 @@ type InvoiceItem = {
   price: number;
 };
 
-type Invoice = {
+type InvoiceType = {
   invoice_id: number;
   invoice_no: string;
   items: InvoiceItem[];
@@ -17,19 +16,21 @@ type Invoice = {
 };
 
 interface InvoiceStore {
-  invoice: Invoice | null;
+  latestInvoice: InvoiceType | null;
+  allInvoices: InvoiceType | null;
   fetchPresentInvoice: () => Promise<void>;
   fetchInvoice: () => Promise<void>;
   clearInvoice: () => void;
 }
 
 export const useStore = create<InvoiceStore>((set) => ({
-  invoice: null,
+  latestInvoice: null,
+  allInvoices: null,
 
   fetchPresentInvoice: async () => {
     try {
-      const response = await axios.get<Invoice>('http://localhost:8080/getPresentInvoice ');
-      set({ invoice: response.data });
+      const response = await axios.get<InvoiceType>('http://localhost:8080/getPresentInvoice ');
+      set({ latestInvoice: response.data });
     } catch (error) {
       console.error("Error fetching invoice:", error);
     }
@@ -37,14 +38,14 @@ export const useStore = create<InvoiceStore>((set) => ({
 
   fetchInvoice: async () => {
     try {
-      const response = await axios.get<Invoice>('http://localhost:8080/getInvoice');
-      set({invoice: response.data})
+      const response = await axios.get<InvoiceType>('http://localhost:8080/getInvoice');
+      set({allInvoices: response.data})
     } catch (error) {
       console.error("Error fetching invoice:", error);
     }
   },
 
   clearInvoice: () => {
-    set({ invoice: null });
+    set({ latestInvoice: null });
   },
 }));

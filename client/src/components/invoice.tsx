@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useStore } from '../hooks/invoiceHook';
 
 const Invoice = () => {
-  const { invoice, fetchPresentInvoice } = useStore();
+  const { latestInvoice, fetchPresentInvoice } = useStore();
 
   useEffect(() => {
     fetchPresentInvoice();
@@ -11,13 +11,12 @@ const Invoice = () => {
   const date = new Date();
   const standardDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
-  if (!invoice) {
+  if (!latestInvoice) {
     return <div>No invoice data available</div>;
   }
 
   return (
     <div id="invoice" className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg">
-      {/* Other invoice details */}
       <table className="w-full text-sm print:text-xs text-gray-700 border-t border-b border-dashed border-gray-300">
         <thead className="border-b border-dashed border-gray-300">
           <tr>
@@ -28,7 +27,7 @@ const Invoice = () => {
           </tr>
         </thead>
         <tbody>
-          {invoice.items.map((item) => (
+          {latestInvoice?.items.map((item) => (
             <tr key={item.id} className="border-b border-dashed border-gray-300">
               <td className="py-2 px-2">{item.description}</td>
               <td className="py-2 px-2">₱{item.price.toFixed(2)}</td>
@@ -38,24 +37,23 @@ const Invoice = () => {
           ))}
         </tbody>
       </table>
-      {/* Other invoice summary details */}
     <div className="mt-4 text-gray-800 text-lg font-bold border-t border-dashed border-gray-300 pt-4">
         <div className="flex justify-between">
           <span>Subtotal</span>
           <span>
-            ₱{invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0).toFixed(2)}
+            ₱{latestInvoice?.items.reduce((sum, item) => sum + item.quantity * item.price, 0).toFixed(2)}
           </span>
         </div>
         <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
           <span>Tax (10%)</span>
           <span>
-            ₱{(invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 0.1).toFixed(2)}
+            ₱{(latestInvoice?.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 0.1).toFixed(2)}
           </span>
         </div>
         <div className="flex justify-between text-xl font-bold mt-4">
           <span>Total</span>
           <span>
-            ₱{(invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 1.1).toFixed(2)}
+            ₱{(latestInvoice?.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 1.1).toFixed(2)}
           </span>
         </div>
       </div>
@@ -63,7 +61,7 @@ const Invoice = () => {
       <div className="mt-10 text-sm print:text-xs">
         <div className="flex justify-between">
           <div>
-            <p className="font-bold">Invoice no. {invoice.invoice_no}</p>
+            <p className="font-bold">Invoice no. {latestInvoice.invoice_no}</p>
             <p>Date: {standardDate}</p>
             <p>Due Date: 11.03.2024</p>
           </div>

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useStore } from '../hooks/invoiceHook'
 
 export const Route = createFileRoute('/invoiceHistory')({
-  component: () => InvoiceHistory,
+  component: () => <InvoiceHistory />,
 })
 
 function InvoiceHistory(){
@@ -22,7 +22,6 @@ function InvoiceHistory(){
 
     return (
         <div id="invoice" className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg">
-          {/* Other invoice details */}
           <table className="w-full text-sm print:text-xs text-gray-700 border-t border-b border-dashed border-gray-300">
             <thead className="border-b border-dashed border-gray-300">
               <tr>
@@ -43,7 +42,7 @@ function InvoiceHistory(){
               ))}
             </tbody>
           </table>
-          {/* Other invoice summary details */}
+
         <div className="mt-4 text-gray-800 text-lg font-bold border-t border-dashed border-gray-300 pt-4">
             <div className="flex justify-between">
               <span>Subtotal</span>

@@ -17,7 +17,7 @@ type InvoiceType = {
 
 interface InvoiceStore {
   latestInvoice: InvoiceType | null;
-  allInvoices: InvoiceType | null;
+  allInvoices: InvoiceType[] | null;
   fetchPresentInvoice: () => Promise<void>;
   fetchInvoice: () => Promise<void>;
   clearInvoice: () => void;
@@ -25,7 +25,7 @@ interface InvoiceStore {
 
 export const useStore = create<InvoiceStore>((set) => ({
   latestInvoice: null,
-  allInvoices: null,
+  allInvoices: [],
 
   fetchPresentInvoice: async () => {
     try {
@@ -38,8 +38,10 @@ export const useStore = create<InvoiceStore>((set) => ({
 
   fetchInvoice: async () => {
     try {
-      const response = await axios.get<InvoiceType>('http://localhost:8080/getInvoice');
+      const response = await axios.get<InvoiceType[]>('http://localhost:8080/getInvoice');
       set({allInvoices: response.data})
+      console.log('API Response:', JSON.stringify(response.data, null, 2));
+      
     } catch (error) {
       console.error("Error fetching invoice:", error);
     }

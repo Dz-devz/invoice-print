@@ -13,10 +13,11 @@ function InvoiceHistory(){
     fetchInvoice();
   }, []);
 
+  console.log(allInvoices);
+  
+
   const date = new Date();
   const standardDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-
-  const invoiceItems = allInvoices?.items || [];
 
   if (!allInvoices) {
     return <div>No invoice data available</div>;
@@ -34,14 +35,15 @@ function InvoiceHistory(){
               </tr>
             </thead>
             <tbody>
-              {invoiceItems.map((item) => (
-                <tr key={item.id} className="border-b border-dashed border-gray-300">
-                  <td className="py-2 px-2">{item.description}</td>
-                  <td className="py-2 px-2">₱{item.price.toFixed(2)}</td>
-                  <td className="py-2 px-2">{item.quantity}</td>
-                  <td className="py-2 px-2">₱{(item.quantity * item.price).toFixed(2)}</td>
-                </tr>
-              ))}
+                {allInvoices.map((invoice) => invoice.items.map((item) => (
+                  <tr key={item.id} className="border-b border-dashed border-gray-300">
+                    <td className="py-2 px-2">{item.description}</td>
+                    <td className="py-2 px-2">₱{item.price.toFixed(2)}</td>
+                    <td className="py-2 px-2">{item.quantity}</td>
+                    <td className="py-2 px-2">₱{(item.quantity * item.price).toFixed(2)}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
 
@@ -49,19 +51,37 @@ function InvoiceHistory(){
             <div className="flex justify-between">
               <span>Subtotal</span>
               <span>
-                ₱{invoiceItems.reduce((sum, item) => sum + item.quantity * item.price, 0).toFixed(2)}
+                
+                ₱{allInvoices
+  .map((invoice) =>
+    invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0)
+  )
+  .reduce((total, invoiceTotal) => total + invoiceTotal, 0)
+  .toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
               <span>Tax (10%)</span>
               <span>
-                ₱{(invoiceItems.reduce((sum, item) => sum + item.quantity * item.price, 0) * 0.1).toFixed(2)}
+              ₱{allInvoices
+  .map((invoice) =>
+    invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 0.1
+  )
+  .reduce((total, invoiceTotal) => total + invoiceTotal, 0)
+  .toFixed(2)}
+
               </span>
             </div>
             <div className="flex justify-between text-xl font-bold mt-4">
               <span>Total</span>
               <span>
-                ₱{(invoiceItems.reduce((sum, item) => sum + item.quantity * item.price, 0) * 1.1).toFixed(2)}
+              ₱{allInvoices
+  .map((invoice) =>
+    invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 1.1
+  )
+  .reduce((total, invoiceTotal) => total + invoiceTotal, 0)
+  .toFixed(2)}
+
               </span>
             </div>
           </div>
@@ -69,7 +89,7 @@ function InvoiceHistory(){
           <div className="mt-10 text-sm print:text-xs">
             <div className="flex justify-between">
               <div>
-                <p className="font-bold">Invoice no. {allInvoices.invoice_no}</p>
+                <p className="font-bold">Invoice no. {allInvoices.map((invoice) => invoice.invoice_no)}</p>
                 <p>Date: {standardDate}</p>
                 <p>Due Date: 11.03.2024</p>
               </div>

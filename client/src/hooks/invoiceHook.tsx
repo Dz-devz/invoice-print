@@ -6,9 +6,11 @@ type InvoiceItem = {
   description: string;
   quantity: number;
   price: number;
+  invoiceId: number;
 };
 
 type InvoiceType = {
+  id: number;
   invoice_id: number;
   invoice_no: string;
   items: InvoiceItem[];

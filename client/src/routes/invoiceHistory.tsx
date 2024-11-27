@@ -19,11 +19,18 @@ function InvoiceHistory(){
   const date = new Date();
   const standardDate = date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
+  const groupedInvoices = allInvoices?.map((invoice) => ({
+    ...invoice,
+    items: invoice.items.filter((item) => item.invoiceId === invoice.id),
+  }));
+
   if (!allInvoices) {
     return <div>No invoice data available</div>;
   }
 
     return (
+      <>
+      {groupedInvoices?.map((invoice) => (
         <div id="invoice" className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg">
           <table className="w-full text-sm print:text-xs text-gray-700 border-t border-b border-dashed border-gray-300">
             <thead className="border-b border-dashed border-gray-300">
@@ -35,15 +42,15 @@ function InvoiceHistory(){
               </tr>
             </thead>
             <tbody>
-                {allInvoices.map((invoice) => invoice.items.map((item) => (
-                  <tr key={item.id} className="border-b border-dashed border-gray-300">
-                    <td className="py-2 px-2">{item.description}</td>
-                    <td className="py-2 px-2">₱{item.price.toFixed(2)}</td>
-                    <td className="py-2 px-2">{item.quantity}</td>
-                    <td className="py-2 px-2">₱{(item.quantity * item.price).toFixed(2)}</td>
-                  </tr>
-                ))
-              )}
+            {invoice.items.map((item) => (
+                <tr key={item.id} className="border-b border-dashed border-gray-300">
+                  <td className="py-2 px-2">{item.description}</td>
+                  <td className="py-2 px-2">₱{item.price.toFixed(2)}</td>
+                  <td className="py-2 px-2">{item.quantity}</td>
+                  <td className="py-2 px-2">₱{(item.quantity * item.price).toFixed(2)}</td>
+                </tr>
+              ))}
+
             </tbody>
           </table>
 
@@ -52,22 +59,18 @@ function InvoiceHistory(){
               <span>Subtotal</span>
               <span>
                 
-                ₱{allInvoices
-  .map((invoice) =>
+                ₱{(
     invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0)
   )
-  .reduce((total, invoiceTotal) => total + invoiceTotal, 0)
-  .toFixed(2)}
+  . toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
               <span>Tax (10%)</span>
               <span>
-              ₱{allInvoices
-  .map((invoice) =>
+              ₱{(
     invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 0.1
   )
-  .reduce((total, invoiceTotal) => total + invoiceTotal, 0)
   .toFixed(2)}
 
               </span>
@@ -75,11 +78,9 @@ function InvoiceHistory(){
             <div className="flex justify-between text-xl font-bold mt-4">
               <span>Total</span>
               <span>
-              ₱{allInvoices
-  .map((invoice) =>
+              ₱{(
     invoice.items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 1.1
-  )
-  .reduce((total, invoiceTotal) => total + invoiceTotal, 0)
+              )
   .toFixed(2)}
 
               </span>
@@ -89,13 +90,16 @@ function InvoiceHistory(){
           <div className="mt-10 text-sm print:text-xs">
             <div className="flex justify-between">
               <div>
-                <p className="font-bold">Invoice no. {allInvoices.map((invoice) => invoice.invoice_no)}</p>
+                <p className="font-bold">Invoice no. {invoice.invoice_no}</p>
                 <p>Date: {standardDate}</p>
                 <p>Due Date: 11.03.2024</p>
               </div>
             </div>
           </div>
         </div>
+        ))
+      }
+      </>
       );
 }
 

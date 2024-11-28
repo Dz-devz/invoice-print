@@ -93,7 +93,6 @@ function InvoiceHistory(){
               <div>
                 <p className="font-bold">Invoice no. {invoice.invoice_no}</p>
                 <p>Date: {standardDate}</p>
-                <p>Due Date: 11.03.2024</p>
               </div>
             </div>
           </div>

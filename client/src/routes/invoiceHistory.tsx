@@ -30,6 +30,7 @@ function InvoiceHistory(){
 
     return (
       <>
+    <div className="flex flex-row flex-wrap gap-4 justify-center">
       {groupedInvoices?.map((invoice) => (
         <div id="invoice" className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg">
           <table className="w-full text-sm print:text-xs text-gray-700 border-t border-b border-dashed border-gray-300">
@@ -99,6 +100,7 @@ function InvoiceHistory(){
         </div>
         ))
       }
+      </div>
       </>
       );
 }

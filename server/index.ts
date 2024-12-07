@@ -16,18 +16,17 @@ app.get("/getPresentInvoice", async (req, res) => {
         items: true,
       },
       orderBy: {
-        id: 'desc', // Optional: Order by invoice id
+        id: "desc", // Optional: Order by invoice id
       },
     });
     console.log(invoices);
-    
+
     res.json(invoices);
   } catch (error) {
     console.error("Error fetching invoices:", error);
     res.status(500).json({ error: "Failed to fetch invoices" });
   }
 });
-
 
 app.get("/getInvoice", async (req, res) => {
   try {
@@ -36,11 +35,28 @@ app.get("/getInvoice", async (req, res) => {
         items: true,
       },
       orderBy: {
-        id: 'desc',
+        id: "desc",
       },
     });
     console.log(invoices);
-    
+
+    res.json(invoices);
+  } catch (error) {
+    console.error("Error fetching invoices:", error);
+    res.status(500).json({ error: "Failed to fetch invoices" });
+  }
+});
+
+app.get("/getSingleInvoice/:id", async (req, res) => {
+  const { id }: { id: string } = req.params;
+  try {
+    const invoices = await prisma.invoice.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+    console.log(invoices);
+
     res.json(invoices);
   } catch (error) {
     console.error("Error fetching invoices:", error);
@@ -63,11 +79,11 @@ app.get("/getInvoice", async (req, res) => {
 app.post("/createInvoice", async (req, res) => {
   try {
     const { invoice_no, items } = req.body;
-
+    //Check if array or single data
     if (!invoice_no || !items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: "Invalid invoice or items data" });
     }
-
+    // iterate using for each to all of the items to check if types or any missing fields
     for (const item of items) {
       const { description, quantity, price } = item;
 
@@ -88,10 +104,10 @@ app.post("/createInvoice", async (req, res) => {
       data: {
         invoice_no: invoice_no,
         items: {
-          create: items.map(item => ({
+          create: items.map((item) => ({
             description: item.description,
             quantity: item.quantity,
-            price: item.price
+            price: item.price,
           })),
         },
       },
@@ -107,11 +123,11 @@ app.post("/createInvoice", async (req, res) => {
   }
 });
 
-
 app.put("/invoice/:invoice_id", async (req, res) => {
   const { invoice_id }: { invoice_id: string } = req.params;
   const { items } = req.body;
 
+  // Check if the value of data is null or undefinded
   try {
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: "No items provided for update." });
@@ -146,6 +162,7 @@ app.put("/invoice/:invoice_id", async (req, res) => {
   }
 });
 
+// delete data
 app.delete("/invoice/:invoice_id", async (req, res) => {
   const { invoice_id }: { invoice_id?: string } = req.params;
 
@@ -163,8 +180,6 @@ app.delete("/invoice/:invoice_id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
 
 const server = createServer(app); // Use app as the handler
 

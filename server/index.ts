@@ -2,19 +2,12 @@ import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import express from "express";
 import { createServer } from "http";
-import path from "path";
 
 const prisma = new PrismaClient();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.use(express.static(path.join(__dirname, "client/dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/dist", "index.html"));
-});
 
 app.get("/getPresentInvoice", async (req, res) => {
   try {

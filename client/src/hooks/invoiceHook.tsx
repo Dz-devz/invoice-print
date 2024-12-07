@@ -35,7 +35,7 @@ export const useStore = create<InvoiceStore>((set) => ({
   fetchPresentInvoice: async () => {
     try {
       const response = await axios.get<InvoiceType>(
-        "http://localhost:8080/getPresentInvoice "
+        "http://localhost:8080/api/getPresentInvoice "
       );
       set({ latestInvoice: response.data });
     } catch (error) {
@@ -46,7 +46,7 @@ export const useStore = create<InvoiceStore>((set) => ({
   fetchInvoice: async () => {
     try {
       const response = await axios.get<InvoiceType[]>(
-        "http://localhost:8080/getInvoice"
+        "http://localhost:8080/api/getInvoice"
       );
       set({ allInvoices: response.data });
       console.log("API Response:", JSON.stringify(response.data, null, 2));
@@ -58,7 +58,7 @@ export const useStore = create<InvoiceStore>((set) => ({
   fetchSingleInvoice: async (id: number) => {
     try {
       const response = await axios.get<InvoiceType>(
-        `http://localhost:8080/getSingleInvoice/${id}`
+        `http://localhost:8080/api/getSingleInvoice/${id}`
       );
       set({ singleInvoice: response.data });
     } catch (error) {

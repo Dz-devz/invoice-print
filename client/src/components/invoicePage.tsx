@@ -1,6 +1,6 @@
 import { useRef } from "react";
+import { useStore } from "../hooks/invoiceHook";
 import Invoice from "./invoice";
-import { useStore } from '../hooks/invoiceHook';
 
 const InvoicePage = () => {
   const invoiceRef = useRef<HTMLDivElement>(null);

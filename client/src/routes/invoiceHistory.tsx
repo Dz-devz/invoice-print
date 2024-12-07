@@ -1,17 +1,30 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useStore } from "../hooks/invoiceHook";
 
 export const Route = createFileRoute("/invoiceHistory")({
   component: () => <InvoiceHistory />,
+  validateSearch: (id) => {
+    return {
+      id: id,
+    };
+  },
 });
 
 function InvoiceHistory() {
   const { allInvoices, fetchInvoice } = useStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchInvoice();
-  }, []);
+  }, [fetchInvoice]);
+
+  const handleClickId = (id: number) => {
+    navigate({
+      to: "/history/$id",
+      params: { id: id.toString() },
+    });
+  };
 
   const groupedInvoices = allInvoices?.map((invoice) => ({
     ...invoice,
@@ -29,6 +42,7 @@ function InvoiceHistory() {
           <div
             id="invoice"
             className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg"
+            onClick={() => handleClickId(invoice.id)}
           >
             <table className="w-full text-sm print:text-xs text-gray-700 border-t border-b border-dashed border-gray-300">
               <thead className="border-b border-dashed border-gray-300">

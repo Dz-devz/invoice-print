@@ -16,6 +16,7 @@ import { Route as InvoiceHistoryImport } from './routes/invoiceHistory'
 import { Route as CreateInvoiceImport } from './routes/createInvoice'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as HistoryIdImport } from './routes/history.$id'
 
 // Create/Update Routes
 
@@ -46,6 +47,12 @@ const AboutRoute = AboutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const HistoryIdRoute = HistoryIdImport.update({
+  id: '/history/$id',
+  path: '/history/$id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InvoicesPageImport
       parentRoute: typeof rootRoute
     }
+    '/history/$id': {
+      id: '/history/$id'
+      path: '/history/$id'
+      fullPath: '/history/$id'
+      preLoaderRoute: typeof HistoryIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -99,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/createInvoice': typeof CreateInvoiceRoute
   '/invoiceHistory': typeof InvoiceHistoryRoute
   '/invoicesPage': typeof InvoicesPageRoute
+  '/history/$id': typeof HistoryIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -107,6 +122,7 @@ export interface FileRoutesByTo {
   '/createInvoice': typeof CreateInvoiceRoute
   '/invoiceHistory': typeof InvoiceHistoryRoute
   '/invoicesPage': typeof InvoicesPageRoute
+  '/history/$id': typeof HistoryIdRoute
 }
 
 export interface FileRoutesById {
@@ -116,6 +132,7 @@ export interface FileRoutesById {
   '/createInvoice': typeof CreateInvoiceRoute
   '/invoiceHistory': typeof InvoiceHistoryRoute
   '/invoicesPage': typeof InvoicesPageRoute
+  '/history/$id': typeof HistoryIdRoute
 }
 
 export interface FileRouteTypes {
@@ -126,8 +143,15 @@ export interface FileRouteTypes {
     | '/createInvoice'
     | '/invoiceHistory'
     | '/invoicesPage'
+    | '/history/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/createInvoice' | '/invoiceHistory' | '/invoicesPage'
+  to:
+    | '/'
+    | '/about'
+    | '/createInvoice'
+    | '/invoiceHistory'
+    | '/invoicesPage'
+    | '/history/$id'
   id:
     | '__root__'
     | '/'
@@ -135,6 +159,7 @@ export interface FileRouteTypes {
     | '/createInvoice'
     | '/invoiceHistory'
     | '/invoicesPage'
+    | '/history/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -144,6 +169,7 @@ export interface RootRouteChildren {
   CreateInvoiceRoute: typeof CreateInvoiceRoute
   InvoiceHistoryRoute: typeof InvoiceHistoryRoute
   InvoicesPageRoute: typeof InvoicesPageRoute
+  HistoryIdRoute: typeof HistoryIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -152,6 +178,7 @@ const rootRouteChildren: RootRouteChildren = {
   CreateInvoiceRoute: CreateInvoiceRoute,
   InvoiceHistoryRoute: InvoiceHistoryRoute,
   InvoicesPageRoute: InvoicesPageRoute,
+  HistoryIdRoute: HistoryIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -168,7 +195,8 @@ export const routeTree = rootRoute
         "/about",
         "/createInvoice",
         "/invoiceHistory",
-        "/invoicesPage"
+        "/invoicesPage",
+        "/history/$id"
       ]
     },
     "/": {
@@ -185,6 +213,9 @@ export const routeTree = rootRoute
     },
     "/invoicesPage": {
       "filePath": "invoicesPage.tsx"
+    },
+    "/history/$id": {
+      "filePath": "history.$id.tsx"
     }
   }
 }

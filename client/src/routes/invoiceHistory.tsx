@@ -13,15 +13,6 @@ function InvoiceHistory() {
     fetchInvoice();
   }, []);
 
-  console.log(allInvoices);
-
-  const date = new Date();
-  const standardDate = date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-
   const groupedInvoices = allInvoices?.map((invoice) => ({
     ...invoice,
     items: invoice.items.filter((item) => item.invoiceId === invoice.id),

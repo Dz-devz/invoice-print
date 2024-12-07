@@ -40,6 +40,7 @@ function InvoiceHistory() {
       <div className="flex flex-row flex-wrap gap-4 justify-center">
         {groupedInvoices?.map((invoice) => (
           <div
+            key={invoice.id}
             id="invoice"
             className="p-8 print:p-4 max-w-xl mx-auto bg-white shadow-lg border border-gray-300 print:shadow-none print:border-none rounded-lg"
             onClick={() => handleClickId(invoice.id)}

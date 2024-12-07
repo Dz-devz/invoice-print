@@ -54,6 +54,9 @@ app.get("/getSingleInvoice/:id", async (req, res) => {
       where: {
         id: parseInt(id),
       },
+      include: {
+        items: true,
+      },
     });
     console.log(invoices);
 

@@ -82,7 +82,12 @@ function RouteComponent() {
         <div className="flex justify-between">
           <div>
             <p className="font-bold">Invoice no. {singleInvoice?.invoice_no}</p>
-            <p>Date: {singleInvoice?.createdAt}</p>
+            <p>
+              Date:{" "}
+              {singleInvoice?.createdAt
+                ? new Date(singleInvoice.createdAt).toLocaleDateString("en-US")
+                : "Error not retrieving date"}
+            </p>
           </div>
         </div>
       </div>

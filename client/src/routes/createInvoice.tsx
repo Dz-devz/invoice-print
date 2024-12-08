@@ -16,11 +16,11 @@ export const Route = createFileRoute("/createInvoice")({
 
 function CreateInvoice() {
   const navigate = useNavigate();
-  
+
   const [items, setItems] = useState<InvoiceItem[]>([
     { description: "", quantity: 0, price: 0 },
   ]);
-  
+
   const form = useForm({
     validatorAdapter: zodValidator(),
     defaultValues: {
@@ -30,15 +30,18 @@ function CreateInvoice() {
     },
     onSubmit: async () => {
       try {
-        const response = await axios.post("http://localhost:8080/createInvoice", {
-          invoice_no: "INV-" + new Date().getTime(),
-          items: items,
-        });
-        
+        const response = await axios.post(
+          "http://localhost:8080/api/createInvoice",
+          {
+            invoice_no: "INV-" + new Date().getTime(),
+            items: items,
+          }
+        );
+
         console.log("Invoice created:", response.data);
-        
+
         setItems([{ description: "", quantity: 0, price: 0 }]);
-        
+
         navigate({ to: "/invoicesPage" });
       } catch (error) {
         console.error("Error creating invoice:", error);
@@ -54,7 +57,11 @@ function CreateInvoice() {
     setItems(items.filter((_, idx) => idx !== index));
   };
 
-  const handleChange = <K extends keyof InvoiceItem>(index: number, field: K, value: InvoiceItem[K]) => {
+  const handleChange = <K extends keyof InvoiceItem>(
+    index: number,
+    field: K,
+    value: InvoiceItem[K]
+  ) => {
     const newItems = [...items];
     newItems[index][field] = value;
     setItems(newItems);
@@ -62,7 +69,11 @@ function CreateInvoice() {
 
   const handleFocus = (index: number, field: keyof InvoiceItem) => {
     if (items[index][field] === 0) {
-      handleChange(index, field, "" as unknown as InvoiceItem[keyof InvoiceItem]);
+      handleChange(
+        index,
+        field,
+        "" as unknown as InvoiceItem[keyof InvoiceItem]
+      );
     }
   };
 
@@ -74,7 +85,9 @@ function CreateInvoice() {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Create Invoice</h1>
+      <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        Create Invoice
+      </h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -86,51 +99,80 @@ function CreateInvoice() {
         {items.map((item, index) => (
           <div key={index} className="space-y-4">
             <div>
-              <label htmlFor={`description-${index}`} className="block text-sm font-medium text-gray-700">Description</label>
+              <label
+                htmlFor={`description-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
+              </label>
               <input
                 id={`description-${index}`}
                 name={`description-${index}`}
                 value={item.description}
-                onChange={(e) => handleChange(index, 'description', e.target.value)}
+                onChange={(e) =>
+                  handleChange(index, "description", e.target.value)
+                }
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label htmlFor={`quantity-${index}`} className="block text-sm font-medium text-gray-700">Quantity</label>
+              <label
+                htmlFor={`quantity-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
+                Quantity
+              </label>
               <input
                 id={`quantity-${index}`}
                 name={`quantity-${index}`}
                 value={item.quantity}
                 type="number"
-                onChange={(e) => handleChange(index, 'quantity', Number(e.target.value))}
-                onFocus={() => handleFocus(index, 'quantity')}
-                onBlur={() => handleBlur(index, 'quantity')}
+                onChange={(e) =>
+                  handleChange(index, "quantity", Number(e.target.value))
+                }
+                onFocus={() => handleFocus(index, "quantity")}
+                onBlur={() => handleBlur(index, "quantity")}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label htmlFor={`price-${index}`} className="block text-sm font-medium text-gray-700">Price</label>
+              <label
+                htmlFor={`price-${index}`}
+                className="block text-sm font-medium text-gray-700"
+              >
+                Price
+              </label>
               <input
                 id={`price-${index}`}
                 name={`price-${index}`}
                 value={item.price}
                 type="number"
-                onChange={(e) => handleChange(index, 'price', Number(e.target.value))}
-                onFocus={() => handleFocus(index, 'price')} 
-                onBlur={() => handleBlur(index, 'price')}
+                onChange={(e) =>
+                  handleChange(index, "price", Number(e.target.value))
+                }
+                onFocus={() => handleFocus(index, "price")}
+                onBlur={() => handleBlur(index, "price")}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
-            <button type="button" onClick={() => handleRemoveItem(index)} className="w-full mt-4 py-2 bg-red-600 text-white hover:text-black">
+            <button
+              type="button"
+              onClick={() => handleRemoveItem(index)}
+              className="w-full mt-4 py-2 bg-red-600 text-white hover:text-black"
+            >
               Remove Item
             </button>
           </div>
         ))}
 
-        <button type="button" onClick={handleAddItem} className="w-full mt-4 py-2 bg-gray-950 text-white font-semibold rounded-md hover:bg-gray-500">
+        <button
+          type="button"
+          onClick={handleAddItem}
+          className="w-full mt-4 py-2 bg-gray-950 text-white font-semibold rounded-md hover:bg-gray-500"
+        >
           Add Item
         </button>
 

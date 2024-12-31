@@ -14,6 +14,15 @@ function RouteComponent() {
     fetchSingleInvoice(parseInt(id));
   }, [fetchSingleInvoice, id]);
 
+  const subtotal =
+    singleInvoice?.items.reduce(
+      (sum, item) => sum + item.quantity * item.price,
+      0
+    ) || 0;
+
+  const tax = subtotal * 0.1;
+  const total = subtotal + tax;
+
   return (
     <div
       id="invoice"
@@ -60,21 +69,11 @@ function RouteComponent() {
         </div>
         <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
           <span>Tax (10%)</span>
-          <span>
-            ₱
-            {singleInvoice?.items
-              .reduce((sum, item) => sum + item.quantity * item.price, 0.1)
-              .toFixed(2)}
-          </span>
+          <span>₱{(subtotal * 0.1).toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-xl font-bold mt-4">
           <span>Total</span>
-          <span>
-            ₱
-            {singleInvoice?.items
-              .reduce((sum, item) => sum + item.quantity * item.price, 0 * 1.1)
-              .toFixed(2)}
-          </span>
+          <span>₱{total.toFixed(2)}</span>
         </div>
       </div>
 

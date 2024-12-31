@@ -4,11 +4,11 @@ import { useStore } from "../hooks/invoiceHook";
 
 export const Route = createFileRoute("/invoiceHistory")({
   component: () => <InvoiceHistory />,
-  validateSearch: (id) => {
-    return {
-      id: id,
-    };
-  },
+  // validateSearch: (id) => {
+  //   return {
+  //     id: id,
+  //   };
+  // },
 });
 
 function InvoiceHistory() {

@@ -60,12 +60,7 @@ function RouteComponent() {
       <div className="mt-4 text-gray-800 text-lg font-bold border-t border-dashed border-gray-300 pt-4">
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span>
-            ₱
-            {singleInvoice?.items
-              .reduce((sum, item) => sum + item.quantity * item.price, 0)
-              .toFixed(2)}
-          </span>
+          <span>₱{subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-sm font-medium text-gray-600 mt-1">
           <span>Tax (10%)</span>

@@ -75,6 +75,7 @@ function RouteComponent() {
       <div className="mt-10 text-sm print:text-xs">
         <div className="flex justify-between">
           <div>
+            <p className="font-bold">Customer Name: {singleInvoice?.name}</p>
             <p className="font-bold">Invoice no. {singleInvoice?.invoice_no}</p>
             <p>
               Date:{" "}

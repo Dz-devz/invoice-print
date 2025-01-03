@@ -24,16 +24,16 @@ function CreateInvoice() {
   const form = useForm({
     validatorAdapter: zodValidator(),
     defaultValues: {
-      description: "",
-      quantity: 0,
-      price: 0,
+      name: "",
+      items: items,
     },
-    onSubmit: async () => {
+    onSubmit: async (values) => {
       try {
         const response = await axios.post(
           "http://localhost:8080/api/createInvoice",
           {
             invoice_no: "INV-" + new Date().getTime(),
+            name: values.value.name,
             items: items,
           }
         );
@@ -96,6 +96,28 @@ function CreateInvoice() {
         }}
         className="space-y-4"
       >
+        <div>
+          <form.Field name="name">
+            {(field) => (
+              <div>
+                <label
+                  htmlFor={field.name}
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Customer Name
+                </label>
+                <input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-black"
+                />
+              </div>
+            )}
+          </form.Field>
+        </div>
         {items.map((item, index) => (
           <div key={index} className="space-y-4">
             <div>
@@ -112,7 +134,7 @@ function CreateInvoice() {
                 onChange={(e) =>
                   handleChange(index, "description", e.target.value)
                 }
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
 
@@ -133,7 +155,7 @@ function CreateInvoice() {
                 }
                 onFocus={() => handleFocus(index, "quantity")}
                 onBlur={() => handleBlur(index, "quantity")}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
 
@@ -154,7 +176,7 @@ function CreateInvoice() {
                 }
                 onFocus={() => handleFocus(index, "price")}
                 onBlur={() => handleBlur(index, "price")}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-black"
               />
             </div>
 

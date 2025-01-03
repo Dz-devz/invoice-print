@@ -11,6 +11,7 @@ datasource db {
 model Invoice {
   id         Int           @id @default(autoincrement())
   invoice_no String        @unique
+  name       String
   createdAt  DateTime      @default(now())
   items      InvoiceItem[]
 }

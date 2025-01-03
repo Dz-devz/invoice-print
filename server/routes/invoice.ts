@@ -76,9 +76,15 @@ app.get("/getSingleInvoice/:id", async (req, res) => {
 
 app.post("/createInvoice", async (req, res) => {
   try {
-    const { invoice_no, items } = req.body;
+    const { invoice_no, name, items } = req.body;
     //Check if array or single data
-    if (!invoice_no || !items || !Array.isArray(items) || items.length === 0) {
+    if (
+      !invoice_no ||
+      !items ||
+      !name ||
+      !Array.isArray(items) ||
+      items.length === 0
+    ) {
       return res.status(400).json({ error: "Invalid invoice or items data" });
     }
     // iterate using for each to all of the items to check if types or any missing fields
@@ -101,6 +107,7 @@ app.post("/createInvoice", async (req, res) => {
     const newInvoice = await prisma.invoice.create({
       data: {
         invoice_no: invoice_no,
+        name: name,
         items: {
           create: items.map((item) => ({
             description: item.description,

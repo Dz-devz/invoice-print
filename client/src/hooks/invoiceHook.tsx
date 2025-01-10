@@ -50,7 +50,7 @@ export const useStore = create<InvoiceStore>((set) => ({
         "http://localhost:8080/api/getInvoice"
       );
       set({ allInvoices: response.data });
-      console.log("API Response:", JSON.stringify(response.data, null, 2));
+      // console.log("API Response:", JSON.stringify(response.data, null, 2));
     } catch (error) {
       console.error("Error fetching invoice:", error);
     }

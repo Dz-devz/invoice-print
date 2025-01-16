@@ -224,7 +224,7 @@ function DownloadPDF({
             total={total}
           />
         }
-        fileName="somename.pdf"
+        fileName={`${singleInvoice.invoice_no}.pdf`}
       >
         Download Invoice
       </PDFDownloadLink>

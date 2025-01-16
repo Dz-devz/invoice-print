@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 @media print {
-    @page {
-       margin-left: 0.5in;
-       margin-right: 0.5in;
-       margin-top: 0;
-       margin-bottom: 0;
-     }
+  @page {
+    margin-left: 0.5in;
+    margin-right: 0.5in;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 }
 
 @layer base {
   :root {
-        --radius: 0.5rem;
-    }
+    --radius: 0.5rem;
+  }
 }

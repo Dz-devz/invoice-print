@@ -2,12 +2,13 @@ import {
   Document,
   Page,
   PDFDownloadLink,
+  PDFViewer,
   StyleSheet,
   Text,
   View,
 } from "@react-pdf/renderer";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "../hooks/invoiceHook";
 
 export const Route = createFileRoute("/history/$id")({
@@ -234,10 +235,31 @@ function DownloadPDF({
 function RouteComponent() {
   const { id } = Route.useParams();
   const { singleInvoice, fetchSingleInvoice } = useStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const pdfViewerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchSingleInvoice(parseInt(id));
   }, [fetchSingleInvoice, id]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        pdfViewerRef.current &&
+        !pdfViewerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const subtotal =
     singleInvoice?.items.reduce(
@@ -318,7 +340,13 @@ function RouteComponent() {
         </div>
       </div>
       {singleInvoice && (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center gap-4 justify-center">
+          <button
+            className="mt-4 px-6 py-2 text-white bg-black rounded hover:bg-gray-800 transition"
+            onClick={() => setIsOpen((prev) => !prev)}
+          >
+            Toggle Preview
+          </button>
           <button className="mt-4 px-6 py-2 text-white bg-black rounded hover:bg-gray-800 transition">
             <DownloadPDF
               singleInvoice={singleInvoice}
@@ -326,6 +354,19 @@ function RouteComponent() {
               total={total}
             />
           </button>
+        </div>
+      )}
+      {isOpen && singleInvoice && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div ref={pdfViewerRef} className="w-[500px] h-[750px]">
+            <PDFViewer className="w-full h-full">
+              <MyDocument
+                singleInvoice={singleInvoice}
+                subtotal={subtotal}
+                total={total}
+              />
+            </PDFViewer>
+          </div>
         </div>
       )}
     </>

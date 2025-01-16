@@ -12,6 +12,7 @@
   "dependencies": {
     "@prisma/client": "5.19.1",
     "@radix-ui/react-slot": "^1.1.0",
+    "@react-pdf/renderer": "^4.1.6",
     "@tanstack/react-form": "^0.31.0",
     "@tanstack/react-router": "^1.51.2",
     "@tanstack/zod-form-adapter": "^0.31.0",

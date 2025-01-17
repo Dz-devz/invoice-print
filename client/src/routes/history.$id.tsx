@@ -342,7 +342,7 @@ function RouteComponent() {
       {singleInvoice && (
         <div className="flex items-center gap-4 justify-center">
           <button
-            className="mt-4 px-6 py-2 text-white bg-black rounded hover:bg-gray-800 transition"
+            className="mt-4 px-6 py-2 text-white bg-black rounded hover:bg-gray-800 transition 2xl:flex xl:flex lg:flex md:flex sm:hidden min-[425px]:hidden min-[375px]:hidden min-[320px]:hidden"
             onClick={() => setIsOpen((prev) => !prev)}
           >
             Toggle Preview

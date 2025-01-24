@@ -1,8 +1,8 @@
+import { routes } from "controllers/routes";
 import cors from "cors";
 import express from "express";
 import fs from "fs";
 import path from "path";
-import { invoice } from "./routes/invoice";
 
 const app = express();
 app.use(cors());
@@ -21,6 +21,8 @@ if (fs.existsSync(clientDistPath)) {
   );
 }
 
-app.use("/api", invoice);
+routes.forEach((route) => {
+  app.use("/api", route);
+});
 
 export default app;

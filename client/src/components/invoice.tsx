@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useStore } from "../hooks/invoiceHook";
 
 const Invoice = () => {
-  const { latestInvoice, fetchPresentInvoice } = useStore();
+  const { latestInvoice, fetchPresentInvoice, loading } = useStore();
 
   useEffect(() => {
     fetchPresentInvoice();
@@ -18,6 +18,11 @@ const Invoice = () => {
   if (!latestInvoice) {
     return <div>No invoice data available</div>;
   }
+
+  if (loading)
+    return (
+      <div className="text-center text-2xl font-bold">Fetching Invoices...</div>
+    );
 
   return (
     <div

@@ -20,7 +20,7 @@ export const Route = createFileRoute("/invoiceHistory")({
 });
 
 function InvoiceHistory() {
-  const { allInvoices, fetchInvoice } = useStore();
+  const { allInvoices, fetchInvoice, loading } = useStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,9 +57,19 @@ function InvoiceHistory() {
     });
   }, [allInvoices]);
 
-  if (!allInvoices) {
-    return <div>No invoice data available</div>;
+  if (allInvoices?.length === 0) {
+    return (
+      <div className="text-center text-2xl font-bold">
+        No Invoice History data available
+      </div>
+    );
   }
+  if (loading)
+    return (
+      <div className="text-center text-2xl font-bold">
+        Fetching Invoice History...
+      </div>
+    );
 
   return (
     <>

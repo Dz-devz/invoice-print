@@ -5,6 +5,7 @@ import { errorHandlerMiddleware } from "middlewares/error-handler";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   errorHandlerMiddleware(err, res);
 });

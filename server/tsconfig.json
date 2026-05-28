@@ -2,8 +2,10 @@
   "compilerOptions": {
     "module": "NodeNext",
     "baseUrl": "src",
+    "ignoreDeprecations": "6.0",
     "outDir": "dist",
     "sourceMap": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "types": ["node"]
   }
 }

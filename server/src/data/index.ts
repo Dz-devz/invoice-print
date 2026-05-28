@@ -9,9 +9,7 @@ export async function getPresentInvoiceData() {
     include: {
       items: true,
     },
-    orderBy: {
-      id: "desc",
-    },
+    orderBy: { createdAt: "desc" },
   });
 
   return invoices;
@@ -23,7 +21,7 @@ export async function getInvoiceData() {
       items: true,
     },
     orderBy: {
-      id: "desc",
+      createdAt: "desc",
     },
   });
   return invoices;
@@ -32,7 +30,7 @@ export async function getInvoiceData() {
 export async function getSpecificData(id: string) {
   const invoice = await prisma.invoice.findUnique({
     where: {
-      id: parseInt(id),
+      id: Number(id),
     },
     include: {
       items: true,
@@ -118,7 +116,7 @@ export async function updateData(
     data: {
       items: {
         upsert: items.map((item) => ({
-          where: { id: item.id || 0 },
+          where: { id: item.id },
           update: {
             description: item.description,
             quantity: item.quantity,
@@ -145,10 +143,6 @@ export async function deleteData(invoice_id: string) {
     },
     include: { items: true },
   });
-
-  if (!deletedInvoice) {
-    throw new NotFoundError("Invoice not found");
-  }
 
   return deletedInvoice;
 }

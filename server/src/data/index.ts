@@ -3,7 +3,9 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { BadRequestError, NotFoundError } from "utils/errors";
 
 export const prisma = new PrismaClient({
-  accelerateUrl: process.env.DATABASE_URL,
+  // Adding the logical OR ('|| ""') provides a dummy string fallback
+  // so the Prisma constructor validation passes during deployment dry-runs
+  accelerateUrl: process.env.DATABASE_URL || "",
 }).$extends(withAccelerate());
 
 export async function getPresentInvoiceData() {

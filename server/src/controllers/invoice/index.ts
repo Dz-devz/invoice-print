@@ -1,4 +1,5 @@
-import { Request, Response } from "express";
+import { Context } from "hono";
+
 import {
   createInvoiceData,
   deleteData,
@@ -8,42 +9,60 @@ import {
   updateData,
 } from "../../data/index";
 
-export async function getPresentInvoiceController(req: Request, res: Response) {
+export async function getPresentInvoiceController(c: Context) {
   const invoice = await getPresentInvoiceData();
-  res.json(invoice);
+
+  return c.json(invoice);
 }
 
-export async function getInvoiceController(req: Request, res: Response) {
+export async function getInvoiceController(c: Context) {
   const invoice = await getInvoiceData();
-  res.json(invoice);
+
+  return c.json(invoice);
 }
 
-export async function getSpecificController(req: Request, res: Response) {
-  const { id } = req.params;
+export async function getSpecificController(c: Context) {
+  const id = c.req.param("id");
+
+  if (!id) {
+    return c.json({ error: "ID is required" }, 400);
+  }
+
   const invoice = await getSpecificData(id);
 
-  res.json(invoice);
+  return c.json(invoice);
 }
 
-export async function createInvoiceController(req: Request, res: Response) {
-  const { invoice_no, name, items } = req.body;
-  const newInvoice = createInvoiceData(invoice_no, name, items);
+export async function createInvoiceController(c: Context) {
+  const { invoice_no, name, items } = await c.req.json();
 
-  return res.json(newInvoice);
+  const newInvoice = await createInvoiceData(invoice_no, name, items);
+
+  return c.json(newInvoice);
 }
 
-export async function updateInvoiceController(req: Request, res: Response) {
-  const { invoice_id } = req.params;
-  const { items } = req.body;
-  const newInvoice = updateData(invoice_id, items);
+export async function updateInvoiceController(c: Context) {
+  const invoice_id = c.req.param("invoice_id");
 
-  return res.json(newInvoice);
+  if (!invoice_id) {
+    return c.json({ error: "Invoice ID is required" }, 400);
+  }
+
+  const { items } = await c.req.json();
+
+  const newInvoice = await updateData(invoice_id, items);
+
+  return c.json(newInvoice);
 }
 
-export async function deleteInvoiceController(req: Request, res: Response) {
-  const { invoice_id } = req.params;
+export async function deleteInvoiceController(c: Context) {
+  const invoice_id = c.req.param("invoice_id");
 
-  const deletedInvoice = deleteData(invoice_id);
+  if (!invoice_id) {
+    return c.json({ error: "Invoice ID is required" }, 400);
+  }
 
-  return res.json(deletedInvoice);
+  const deletedInvoice = await deleteData(invoice_id);
+
+  return c.json(deletedInvoice);
 }

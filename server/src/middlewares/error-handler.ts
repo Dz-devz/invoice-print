@@ -1,8 +1,8 @@
-import { Response } from "express";
-import { makeError } from "../utils/errors";
+import { type Context } from "hono";
+import { makeError } from "utils/errors";
 
-export async function errorHandlerMiddleware(err: Error, res: Response) {
+export async function errorHandlerMiddleware(err: Error, c: Context) {
   const { error, statusCode } = makeError(err);
   console.error(error.message, error);
-  return res.status(statusCode).json({ error });
+  return c.json(error, { status: statusCode } as any);
 }

@@ -1,4 +1,3 @@
-import express from "express";
 import {
   createInvoiceController,
   deleteInvoiceController,
@@ -7,8 +6,10 @@ import {
   getSpecificController,
   updateInvoiceController,
 } from ".";
+import { Hono } from "hono";
 
-const invoiceRouter = express.Router();
+// const invoiceRouter = express.Router();
+const invoiceRouter = new Hono();
 
 invoiceRouter.get("/getPresentInvoice", getPresentInvoiceController);
 invoiceRouter.get("/getInvoice", getInvoiceController);

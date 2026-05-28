@@ -4,7 +4,6 @@
     "baseUrl": "src",
     "outDir": "dist",
     "sourceMap": true,
-    "noImplicitAny": true,
-    "types": ["node"]
+    "noImplicitAny": true
   }
 }

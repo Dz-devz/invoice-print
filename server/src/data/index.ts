@@ -2,9 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { BadRequestError, NotFoundError } from "utils/errors";
 
-export const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL,
-}).$extends(withAccelerate());
+export const prisma = new PrismaClient().$extends(withAccelerate());
 
 export async function getPresentInvoiceData() {
   const invoices = await prisma.invoice.findFirst({

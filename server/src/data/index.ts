@@ -3,9 +3,12 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { BadRequestError, NotFoundError } from "utils/errors";
 
 export const prisma = new PrismaClient({
-  // Adding the logical OR ('|| ""') provides a dummy string fallback
-  // so the Prisma constructor validation passes during deployment dry-runs
-  accelerateUrl: process.env.DATABASE_URL || "",
+  // Provide a dummy prisma:// URL.
+  // During deployment, Prisma passes validation.
+  // At live runtime, Cloudflare replaces this with your real dashboard secret!
+  accelerateUrl:
+    process.env.DATABASE_URL ||
+    "prisma://placeholder-for-build-validation.net/?api_key=dummy",
 }).$extends(withAccelerate());
 
 export async function getPresentInvoiceData() {

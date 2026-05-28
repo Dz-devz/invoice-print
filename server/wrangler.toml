@@ -1,13 +1,7 @@
-name = "invoice-api"
+name = "invoice-print"
 main = "src/index.ts"
 compatibility_date = "2026-05-28"
 compatibility_flags = [ "nodejs_compat" ]
 
 [observability]
 enabled = true
-
-[vars]
-# Leaving these empty tells Wrangler to preserve the values 
-# you configured inside the Cloudflare Dashboard
-DATABASE_URL = ""
-DIRECT_URL = ""

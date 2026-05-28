@@ -1,7 +1,8 @@
 import { PrismaClient } from "@prisma/client";
+import { withAccelerate } from "@prisma/extension-accelerate";
 import { BadRequestError, NotFoundError } from "utils/errors";
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient().$extends(withAccelerate());
 
 export async function getPresentInvoiceData() {
   const invoices = await prisma.invoice.findFirst({
@@ -52,7 +53,7 @@ export async function createInvoiceData(
     description: string;
     quantity: number;
     price: number;
-  }[]
+  }[],
 ) {
   if (
     !invoice_no ||
@@ -106,7 +107,7 @@ export async function updateData(
     description: string;
     quantity: number;
     price: number;
-  }[]
+  }[],
 ) {
   if (!items || !Array.isArray(items) || items.length === 0) {
     throw new BadRequestError("Invalid items data");

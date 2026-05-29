@@ -13,6 +13,7 @@ export const prisma = new PrismaClient({
 
 export async function getPresentInvoiceData() {
   const invoices = await prisma.invoice.findFirst({
+    cacheStrategy: { ttl: 60, swr: 120, tags: ["invoice"] },
     include: {
       items: true,
     },
@@ -24,6 +25,7 @@ export async function getPresentInvoiceData() {
 
 export async function getInvoiceData() {
   const invoices = await prisma.invoice.findMany({
+    cacheStrategy: { ttl: 60, swr: 120, tags: ["invoice"] },
     include: {
       items: true,
     },
@@ -102,6 +104,8 @@ export async function createInvoiceData(
       items: true,
     },
   });
+
+  await prisma.$accelerate.invalidate({ tags: ["invoice"] });
   return newInvoice;
 }
 
@@ -140,6 +144,7 @@ export async function updateData(
     include: { items: true },
   });
 
+  await prisma.$accelerate.invalidate({ tags: ["invoice"] });
   return updatedInvoice;
 }
 
@@ -151,5 +156,6 @@ export async function deleteData(invoice_id: string) {
     include: { items: true },
   });
 
+  await prisma.$accelerate.invalidate({ tags: ["invoice"] });
   return deletedInvoice;
 }

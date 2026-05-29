@@ -24,8 +24,8 @@ function InvoiceHistory() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchInvoice();
-  }, [fetchInvoice]);
+    if (!allInvoices?.length) fetchInvoice();
+  }, []);
 
   const handleClickId = useCallback(
     (id: number) => {
@@ -57,19 +57,20 @@ function InvoiceHistory() {
     });
   }, [allInvoices]);
 
-  if (allInvoices?.length === 0) {
+  if (loading && !allInvoices?.length)
+    return (
+      <div className="text-center text-2xl font-bold">
+        Fetching Invoice History...
+      </div>
+    );
+
+  if (!allInvoices?.length) {
     return (
       <div className="text-center text-2xl font-bold">
         No Invoice History data available
       </div>
     );
   }
-  if (loading)
-    return (
-      <div className="text-center text-2xl font-bold">
-        Fetching Invoice History...
-      </div>
-    );
 
   return (
     <>

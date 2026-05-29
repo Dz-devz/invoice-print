@@ -5,8 +5,8 @@ const Invoice = () => {
   const { latestInvoice, fetchPresentInvoice, loading } = useStore();
 
   useEffect(() => {
-    fetchPresentInvoice();
-  }, [fetchPresentInvoice]);
+    if (!latestInvoice) fetchPresentInvoice();
+  }, []);
 
   const date = new Date();
   const standardDate = date.toLocaleDateString("en-US", {
@@ -15,14 +15,14 @@ const Invoice = () => {
     day: "2-digit",
   });
 
-  if (!latestInvoice) {
-    return <div>No invoice data available</div>;
-  }
-
-  if (loading)
+  if (loading && !latestInvoice)
     return (
       <div className="text-center text-2xl font-bold">Fetching Invoices...</div>
     );
+
+  if (!latestInvoice) {
+    return <div>No invoice data available</div>;
+  }
 
   return (
     <div

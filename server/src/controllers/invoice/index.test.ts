@@ -45,6 +45,28 @@ describe("invoice controllers", () => {
     expect(mocked.getSpecificData).toHaveBeenCalledWith("42");
   });
 
+  it("PUT /api/invoice/:invoice_id forwards id + items to updateData", async () => {
+    const updated = {
+      id: 42,
+      invoice_no: "INV-42",
+      name: "Bob",
+      items: [
+        { id: 2, description: "Widget Testing", quantity: 5, price: 10.0 },
+      ],
+    };
+    mocked.updateData.mockResolvedValue(updated as never);
+
+    const res = await app.request("/api/invoice/42", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ items: updated.items }),
+    });
+
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual(updated);
+    expect(mocked.updateData).toHaveBeenCalledWith("42", updated.items);
+  });
+
   it("POST /api/createInvoice passes the parsed body to createInvoiceData", async () => {
     const body = {
       invoice_no: "INV-100",

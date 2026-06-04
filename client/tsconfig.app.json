@@ -22,7 +22,15 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      // Point React's *types* at @types/react explicitly. Without this,
+      // transitive deps like @react-pdf/renderer resolve the untyped `react`
+      // package, their component classes lose their React.Component base, and
+      // `tsc` fails with TS2786 ("cannot be used as a JSX component"). This is
+      // type-check only: Vite resolves `react` to the real runtime package via
+      // resolve.alias / node resolution, so the bundle is unaffected.
+      "react": ["./node_modules/@types/react"],
+      "react-dom": ["./node_modules/@types/react-dom"]
     }
   },
   "include": ["src", "server", "app.ts"]

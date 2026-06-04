@@ -4,9 +4,13 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": ["ES2022"],
-    "types": ["node"],
+    "types": ["node", "jest"],
     "skipLibCheck": true,
     "noEmitOnError": false,
-    "baseUrl": "src"
+    "paths": {
+      "controllers/*": ["./src/controllers/*"],
+      "middlewares/*": ["./src/middlewares/*"],
+      "utils/*": ["./src/utils/*"]
+    }
   }
 }

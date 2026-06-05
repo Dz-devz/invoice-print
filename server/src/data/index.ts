@@ -2,16 +2,26 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { BadRequestError, NotFoundError } from "utils/errors";
 
-export const prisma = new PrismaClient({
-  // Provide a dummy prisma:// URL.
-  // During deployment, Prisma passes validation.
-  // At live runtime, Cloudflare replaces this with your real dashboard secret!
-  accelerateUrl:
-    process.env.DATABASE_URL ||
-    "prisma://placeholder-for-build-validation.net/?api_key=dummy",
-}).$extends(withAccelerate());
+function getPrisma() {
+  return new PrismaClient({
+    // Dummy prisma:// URL so Prisma passes build time validation at runtime
+    // Cloudflare injects the real DATABASE_URL secret.
+    accelerateUrl:
+      process.env.DATABASE_URL ||
+      "prisma://placeholder-for-build-validation.net/?api_key=dummy",
+  }).$extends(withAccelerate());
+}
+
+async function invalidateInvoiceCache(prisma: ReturnType<typeof getPrisma>) {
+  try {
+    await prisma.$accelerate.invalidate({ tags: ["invoice"] });
+  } catch (err) {
+    console.error("Accelerate cache invalidation failed (non-fatal)", err);
+  }
+}
 
 export async function getPresentInvoiceData() {
+  const prisma = getPrisma();
   const invoices = await prisma.invoice.findFirst({
     cacheStrategy: { ttl: 60, swr: 120, tags: ["invoice"] },
     include: {
@@ -24,6 +34,7 @@ export async function getPresentInvoiceData() {
 }
 
 export async function getInvoiceData() {
+  const prisma = getPrisma();
   const invoices = await prisma.invoice.findMany({
     cacheStrategy: { ttl: 60, swr: 120, tags: ["invoice"] },
     include: {
@@ -37,6 +48,7 @@ export async function getInvoiceData() {
 }
 
 export async function getSpecificData(id: string) {
+  const prisma = getPrisma();
   const invoice = await prisma.invoice.findUnique({
     where: {
       id: Number(id),
@@ -62,6 +74,7 @@ export async function createInvoiceData(
     price: number;
   }[],
 ) {
+  const prisma = getPrisma();
   if (
     !invoice_no ||
     !items ||
@@ -105,7 +118,7 @@ export async function createInvoiceData(
     },
   });
 
-  await prisma.$accelerate.invalidate({ tags: ["invoice"] });
+  await invalidateInvoiceCache(prisma);
   return newInvoice;
 }
 
@@ -118,6 +131,7 @@ export async function updateData(
     price: number;
   }[],
 ) {
+  const prisma = getPrisma();
   if (!items || !Array.isArray(items) || items.length === 0) {
     throw new BadRequestError("Invalid items data");
   }
@@ -144,11 +158,12 @@ export async function updateData(
     include: { items: true },
   });
 
-  await prisma.$accelerate.invalidate({ tags: ["invoice"] });
+  await invalidateInvoiceCache(prisma);
   return updatedInvoice;
 }
 
 export async function deleteData(invoice_id: string) {
+  const prisma = getPrisma();
   const deletedInvoice = await prisma.invoice.delete({
     where: {
       id: Number(invoice_id),
@@ -156,6 +171,6 @@ export async function deleteData(invoice_id: string) {
     include: { items: true },
   });
 
-  await prisma.$accelerate.invalidate({ tags: ["invoice"] });
+  await invalidateInvoiceCache(prisma);
   return deletedInvoice;
 }

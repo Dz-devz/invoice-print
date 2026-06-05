@@ -1,8 +1,9 @@
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-form-adapter";
-import axios from "axios";
 import { useState } from "react";
+
+import api from "@/lib/api";
 
 type InvoiceItem = {
   description: string;
@@ -29,8 +30,8 @@ function CreateInvoice() {
     },
     onSubmit: async (values) => {
       try {
-        const response = await axios.post(
-          "http://localhost:8080/api/createInvoice",
+        const response = await api.post(
+          "/api/createInvoice",
           {
             invoice_no: "INV-" + new Date().getTime(),
             name: values.value.name,

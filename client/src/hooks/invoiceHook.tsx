@@ -1,5 +1,6 @@
-import axios from "axios";
 import { create } from "zustand";
+
+import api from "@/lib/api";
 
 type InvoiceItem = {
   id: number;
@@ -38,9 +39,7 @@ export const useStore = create<InvoiceStore>((set) => ({
   fetchPresentInvoice: async () => {
     set({ loading: true });
     try {
-      const response = await axios.get<InvoiceType>(
-        "http://localhost:8080/api/getPresentInvoice "
-      );
+      const response = await api.get<InvoiceType>("/api/getPresentInvoice");
       set({ latestInvoice: response.data, loading: false });
     } catch (error) {
       console.error("Error fetching invoice:", error);
@@ -50,9 +49,7 @@ export const useStore = create<InvoiceStore>((set) => ({
   fetchInvoice: async () => {
     set({ loading: true });
     try {
-      const response = await axios.get<InvoiceType[]>(
-        "http://localhost:8080/api/getInvoice"
-      );
+      const response = await api.get<InvoiceType[]>("/api/getInvoice");
       set({ allInvoices: response.data, loading: false });
       // console.log("API Response:", JSON.stringify(response.data, null, 2));
     } catch (error) {
@@ -62,8 +59,8 @@ export const useStore = create<InvoiceStore>((set) => ({
 
   fetchSingleInvoice: async (id: number) => {
     try {
-      const response = await axios.get<InvoiceType>(
-        `http://localhost:8080/api/getSingleInvoice/${id}`
+      const response = await api.get<InvoiceType>(
+        `/api/getSingleInvoice/${id}`
       );
       set({ singleInvoice: response.data });
     } catch (error) {
